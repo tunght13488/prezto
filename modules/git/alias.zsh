@@ -38,6 +38,7 @@ alias gbx='git branch -d'
 alias gbX='git branch -D'
 alias gbm='git branch -m'
 alias gbM='git branch -M'
+alias gbu='git branch -u'
 alias gbs='git show-branch'
 alias gbS='git show-branch -a'
 
@@ -75,7 +76,7 @@ alias gdk='git ls-files --killed'
 alias gdi='git status --porcelain --short --ignored | sed -n "s/^!! //p"'
 
 # Fetch (f)
-alias gf='git fetch'
+alias gf='git fetch --verbose --prune'
 alias gfc='git clone'
 alias gfm='git pull'
 alias gfr='git pull --rebase'
@@ -125,7 +126,7 @@ alias gpc='git push --set-upstream origin "$(git-branch-current 2> /dev/null)"'
 alias gpp='git pull origin "$(git-branch-current 2> /dev/null)" && git push origin "$(git-branch-current 2> /dev/null)"'
 
 # Rebase (r)
-alias gr='git rebase'
+alias gr='git rebase --verbose'
 alias gra='git rebase --abort'
 alias grc='git rebase --continue'
 alias gri='git rebase --interactive'
