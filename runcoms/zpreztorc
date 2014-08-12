@@ -33,11 +33,11 @@ zstyle ':prezto:load' pmodule \
   'utility' \
   'completion' \
   'archive' \
+  'command-not-found' \
+  'dpkg' \
   'fasd' \
   'git' \
-  'homebrew' \
   'node' \
-  'osx' \
   'ssh' \
   'syntax-highlighting' \
   'history-substring-search' \
@@ -121,7 +121,7 @@ zstyle ':prezto:module:prompt' theme 'steeef'
 #
 
 # Set the SSH identities to load into the agent.
-zstyle ':prezto:module:ssh:load' identities 'id_rsa' 'id_rsa-rocco-54.217.238.239' 'ltld_rsa' 'smartosc_rsa'
+zstyle ':prezto:module:ssh:load' identities 'id_rsa'
 
 #
 # Syntax Highlighting
