@@ -37,6 +37,7 @@ zstyle ':prezto:load' pmodule \
   'dpkg' \
   'fasd' \
   'git' \
+  'docker' \
   'node' \
   'ssh' \
   'syntax-highlighting' \
