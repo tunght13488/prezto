@@ -15,6 +15,8 @@ fi
 export PATH=$HOME/bin:$HOME/.composer/vendor/bin:$PATH
 # ssh
 export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
+export CLICOLOR=1
+export EDITOR=vim
 ################################################################################
 # ALIAS
 # Sublime
