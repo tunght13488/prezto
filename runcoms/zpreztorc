@@ -37,8 +37,10 @@ zstyle ':prezto:load' pmodule \
   'dpkg' \
   'fasd' \
   'git' \
+  'homebrew' \
   'docker' \
   'node' \
+  'osx' \
   'ssh' \
   'syntax-highlighting' \
   'history-substring-search' \

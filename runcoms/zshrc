@@ -11,16 +11,31 @@ fi
 # Customize to your needs...
 ################################################################################
 # VARIABLES
-# Path
-export PATH=$HOME/bin:$HOME/.composer/vendor/bin:$PATH
 # ssh
 export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
-export CLICOLOR=1
-export EDITOR=vim
+# Homebrew
+export HOMEBREW_GITHUB_API_TOKEN=401709b45efda5610240d15cb399d021922fc786
+# Compilation flags
+export ARCHFLAGS="-arch x86_64"
+# Python path
+export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
+# GoPath
+export GOPATH=$HOME/.gocode
+export PATH=$PATH:$HOME/.gocode/bin
+# Android
+export ANDROID_HOME=/usr/local/opt/android-sdk
+# Git diff highlight
+if [[ "$OSTYPE" == darwin* ]]; then
+  export PATH=$PATH:$(brew --prefix git)/share/git-core/contrib/diff-highlight
+fi
 ################################################################################
 # ALIAS
 # Sublime
-alias st="/usr/bin/subl"
+if [[ "$OSTYPE" == darwin* ]]; then
+  alias st="$HOME/bin/subl"
+else
+  alias st="/usr/bin/subl"
+fi
 alias todo="st $HOME/my.todo"
 # Laravel
 alias lv="artisan"
@@ -32,9 +47,9 @@ alias 000='chmod 000'
 alias 400='chmod 400'
 alias 644='chmod 644'
 alias 755='chmod 755'
-# Program
-alias makepass='openssl rand -base64 32'
 # Random
+alias makepass='openssl rand -base64 32'
+# Program
 alias hosts='sudo $EDITOR /etc/hosts'
 alias sshconfig='$EDITOR ~/.ssh/config'
 alias currentwifi="networksetup -getairportnetwork en1"
@@ -44,18 +59,31 @@ alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias ips="ifconfig -a | perl -nle'/(\d+.\d+.\d+.\d+)/ && print $1'"
 # File size
 alias fs="stat -f \"%z bytes\""
+if [[ "$OSTYPE" == darwin* ]]; then
+  alias shuttleconfig="st $HOME/.shuttle.json"
+  alias chrome='open -a "Google Chrome"'
+  alias stfu="osascript -e 'set volume output muted true'"
+  alias vol10="osascript -e 'set volume 10'"
+  alias vol5="osascript -e 'set volume 5'"
+  alias localip="ipconfig getifaddr en0"
+  alias whois="whois -h whois-servers.net"
+  alias flush="dscacheutil -flushcache"
+  alias cleanup="find . -name '*.DS_Store' -type f -ls -delete"
+  alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+  alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+fi
 ################################################################################
 # LIBRARY
 # MeRC
 [[ -s $HOME/.merc ]] && . $HOME/.merc
 # rvm
 if [[ -s $HOME/.rvm/scripts/rvm ]]; then
-    . $HOME/.rvm/scripts/rvm
-    # export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+  . $HOME/.rvm/scripts/rvm
+  # export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 fi
 # Mark
 [[ -s $HOME/.mark.sh ]] && . $HOME/.mark.sh
 # Perlbrew
 [[ -s $HOME/perl5/perlbrew/etc/bashrc ]] && . $HOME/perl5/perlbrew/etc/bashrc
 # Wordpress
-# [[ -s $HOME/wp-completion.bash ]] && . $HOME/wp-completion.bash
+[[ -s $HOME/wp-completion.bash ]] && . $HOME/wp-completion.bash
