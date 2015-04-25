@@ -39,6 +39,11 @@ fi
 alias todo="st $HOME/my.todo"
 # Laravel
 alias lv="artisan"
+alias a="artisan"
+# Composer
+alias c="artisan"
+# Vagrant
+alias c="artisan"
 # Git
 alias gfl="git flow"
 # chmod

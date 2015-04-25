@@ -10,7 +10,9 @@
 #
 
 # Docker
-alias d='docker'
+alias dk='docker'
+alias dkm='docker-machine'
+alias dkc='docker-compose'
 
 
 # Get latest container ID
@@ -51,3 +53,5 @@ dbu() { docker build -t=$1 .; }
 
 # Show all alias related docker
 dalias() { alias | grep 'docker' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
+
+alias dkv="docker inspect --format '{{ .Volumes }}'"
