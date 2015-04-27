@@ -16,9 +16,8 @@ pmodload 'helper'
 # Source module files.
 source "${0:h}/alias.zsh"
 
-export OVPN_DATA="ovpn-data"
-
+# Docker Machine
 if (( $+commands[docker-machine] )); then
-  $(docker-machine env)
+  $(docker-machine env) > /dev/null 2>&1
 fi
 
