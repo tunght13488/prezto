@@ -42,9 +42,9 @@ alias todo="st $HOME/my.todo"
 alias lv="artisan"
 alias a="artisan"
 # Composer
-alias c="artisan"
+alias c="composer"
 # Vagrant
-alias c="artisan"
+alias v="vagrant"
 # Git
 alias gfl="git flow"
 # chmod
