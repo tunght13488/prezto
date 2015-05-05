@@ -18,6 +18,6 @@ source "${0:h}/alias.zsh"
 
 # Docker Machine
 if (( $+commands[docker-machine] )); then
-  $(docker-machine env) > /dev/null 2>&1
+  eval "$(docker-machine env)"
 fi
 

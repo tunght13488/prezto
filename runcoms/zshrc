@@ -39,8 +39,8 @@ else
 fi
 alias todo="st $HOME/my.todo"
 # Laravel
-alias lv="artisan"
-alias a="artisan"
+alias lv="php artisan"
+alias a="php artisan"
 # Composer
 alias c="composer"
 # Vagrant
