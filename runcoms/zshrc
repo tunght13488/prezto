@@ -29,6 +29,10 @@ export ANDROID_HOME=/usr/local/opt/android-sdk
 if [[ "$OSTYPE" == darwin* ]]; then
   export PATH=$PATH:$(brew --prefix git)/share/git-core/contrib/diff-highlight
 fi
+# Docker
+export DOCKER_HOST=tcp://docker.tunght.com:2376
+export DOCKER_CERT_PATH=$HOME/.docker
+export DOCKER_TLS_VERIFY=1
 ################################################################################
 # ALIAS
 # Sublime

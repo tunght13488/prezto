@@ -15,9 +15,3 @@ pmodload 'helper'
 
 # Source module files.
 source "${0:h}/alias.zsh"
-
-# Docker Machine
-if (( $+commands[docker-machine] )); then
-  eval "$(docker-machine env)"
-fi
-
