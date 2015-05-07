@@ -55,3 +55,8 @@ dbu() { docker build -t=$1 .; }
 dalias() { alias | grep 'docker' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/['|\']//g" | sort; }
 
 alias dkv="docker inspect --format '{{ .Volumes }}'"
+
+dke() {
+  dkv $1
+  docker run --rm -it --volumes-from=$1 ubuntu /bin/bash
+}
