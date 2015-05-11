@@ -182,4 +182,4 @@ alias gwx='git rm -r'
 alias gwX='git rm -rf'
 
 # Custom
-function gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
+gi() { curl -L https://www.gitignore.io/api/$@ ;}
