@@ -47,7 +47,7 @@ alias lv="php artisan"
 alias a="php artisan"
 # Composer
 if (( $+commands[hhvm] )); then
-  alias composer="hhvm -v ResourceLimit.SocketDefaultTimeout=30 -v Http.SlowQueryThreshold=30000 $(which composer)"
+  alias composer="hhvm -v ResourceLimit.SocketDefaultTimeout=180 -v Http.SlowQueryThreshold=180000 $(which composer)"
 fi
 alias c="composer"
 # Vagrant
