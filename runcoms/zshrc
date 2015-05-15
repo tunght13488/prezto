@@ -49,6 +49,8 @@ alias a="php artisan"
 alias c="composer"
 # Vagrant
 alias v="vagrant"
+# Symfony
+alias s="php app/console"
 # Git
 alias gfl="git flow"
 # chmod
