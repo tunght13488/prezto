@@ -33,6 +33,8 @@ fi
 export DOCKER_HOST=tcp://docker.tunght.com:2376
 export DOCKER_CERT_PATH=$HOME/.docker
 export DOCKER_TLS_VERIFY=1
+# Facebook PathPicker
+export FPP_EDITOR=subl
 ################################################################################
 # ALIAS
 # Sublime
@@ -56,6 +58,9 @@ alias v="vagrant"
 alias s="php app/console"
 # Git
 alias gfl="git flow"
+if (( $+commands[hub] )); then
+  eval "$(hub alias -s)"
+fi
 # chmod
 alias mx='chmod a+x'
 alias 000='chmod 000'
