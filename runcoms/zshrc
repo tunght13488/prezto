@@ -24,8 +24,13 @@ export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
 # GoPath
 export GOPATH=$PROJECT_PATH/go
 export PATH=$PATH:$GOPATH/bin
-export GOROOT=$HOME/go
-export PATH=$PATH:$GOROOT/bin
+if [[ "$OSTYPE" == darwin* ]]; then
+    export GOROOT=/usr/local/opt/go/libexec
+    export PATH=$PATH:$GOROOT/bin
+else
+    export GOROOT=$HOME/go
+    export PATH=$PATH:$GOROOT/bin
+fi
 # Android
 export ANDROID_HOME=/usr/local/opt/android-sdk
 # Git diff highlight
