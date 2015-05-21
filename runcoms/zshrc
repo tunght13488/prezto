@@ -38,6 +38,8 @@ export DOCKER_TLS_VERIFY=1
 # WebStorm
 export WEBSTORM_PATH=/opt/webstorm
 [[ -s $WEBSTORM_PATH ]] && export PATH=$PATH:$WEBSTORM_PATH/bin
+# Facebook PathPicker
+export FPP_EDITOR=subl
 ################################################################################
 # ALIAS
 # Sublime
@@ -61,6 +63,9 @@ alias v="vagrant"
 alias s="php app/console"
 # Git
 alias gfl="git flow"
+if (( $+commands[hub] )); then
+  eval "$(hub alias -s)"
+fi
 # chmod
 alias mx='chmod a+x'
 alias 000='chmod 000'
