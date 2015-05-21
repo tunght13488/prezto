@@ -11,6 +11,7 @@ fi
 # Customize to your needs...
 ################################################################################
 # VARIABLES
+export PROJECT_PATH=$HOME/Projects
 export PATH=$PATH:$HOME/bin:$HOME/.composer/vendor/bin
 # ssh
 export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
@@ -21,8 +22,9 @@ export ARCHFLAGS="-arch x86_64"
 # Python path
 export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
 # GoPath
-export GOPATH=$HOME/.gocode
-export PATH=$PATH:$HOME/.gocode/bin
+export GOPATH=$PROJECT_PATH/go
+export GOROOT=$HOME/go
+export PATH=$PATH:$GOROOT/bin
 # Android
 export ANDROID_HOME=/usr/local/opt/android-sdk
 # Git diff highlight
@@ -33,6 +35,9 @@ fi
 export DOCKER_HOST=tcp://docker.tunght.com:2376
 export DOCKER_CERT_PATH=$HOME/.docker
 export DOCKER_TLS_VERIFY=1
+# WebStorm
+export WEBSTORM_PATH=/opt/webstorm
+[[ -s $WEBSTORM_PATH ]] && export PATH=$PATH:$WEBSTORM_PATH/bin
 ################################################################################
 # ALIAS
 # Sublime
@@ -102,3 +107,6 @@ fi
 [[ -s $HOME/perl5/perlbrew/etc/bashrc ]] && . $HOME/perl5/perlbrew/etc/bashrc
 # Wordpress
 [[ -s $HOME/wp-completion.bash ]] && . $HOME/wp-completion.bash
+# NVM
+export NVM_DIR="${HOME}/.nvm"
+[ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
