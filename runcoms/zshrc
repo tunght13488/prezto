@@ -23,6 +23,7 @@ export ARCHFLAGS="-arch x86_64"
 export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
 # GoPath
 export GOPATH=$PROJECT_PATH/go
+export PATH=$PATH:$GOPATH/bin
 export GOROOT=$HOME/go
 export PATH=$PATH:$GOROOT/bin
 # Android
