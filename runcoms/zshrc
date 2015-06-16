@@ -58,6 +58,7 @@ alias todo="st $HOME/my.todo"
 # Laravel
 alias lv="php artisan"
 alias a="php artisan"
+alias en="envoy run"
 # Composer
 if (( $+commands[hhvm] )); then
   alias composer="hhvm -v ResourceLimit.SocketDefaultTimeout=180 -v Http.SlowQueryThreshold=180000 $(which composer)"
