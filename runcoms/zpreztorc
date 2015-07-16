@@ -35,6 +35,7 @@ zstyle ':prezto:load' pmodule \
   'archive' \
   'command-not-found' \
   'dpkg' \
+  'pacman' \
   'fasd' \
   'git' \
   'homebrew' \
