@@ -104,6 +104,10 @@ if [[ "$OSTYPE" == darwin* ]]; then
   alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
   alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
 fi
+# Magento 2
+alias magento="./bin/magento"
+alias mage="magento"
+alias m="mage"
 ################################################################################
 # LIBRARY
 # MeRC
