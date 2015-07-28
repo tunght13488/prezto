@@ -46,6 +46,14 @@ export WEBSTORM_PATH=/opt/webstorm
 [[ -s $WEBSTORM_PATH ]] && export PATH=$PATH:$WEBSTORM_PATH/bin
 # Facebook PathPicker
 export FPP_EDITOR=subl
+# Ibus
+export GTK_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+export QT_IM_MODULE=ibus
+# Hub
+export PATH="/opt/hub:$PATH"
+# Gem
+export PATH="/home/rocco/.gem/ruby/2.2.0/bin:$PATH"
 ################################################################################
 # ALIAS
 # Sublime
@@ -126,7 +134,3 @@ fi
 # NVM
 export NVM_DIR="${HOME}/.nvm"
 [ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
