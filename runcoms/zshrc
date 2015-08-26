@@ -116,6 +116,14 @@ fi
 alias magento="./bin/magento"
 alias mage="magento"
 alias m="mage"
+function mr_base () {
+  mr config:set web/unsecure/base_url "http://$1/";
+  mr config:set web/secure/base_url "https://$1/";
+}
+function mr_base_same () {
+  mr config:set web/unsecure/base_url "$1";
+  mr config:set web/secure/base_url "$1";
+}
 ################################################################################
 # LIBRARY
 # MeRC
