@@ -22,15 +22,17 @@ export ARCHFLAGS="-arch x86_64"
 # Python path
 export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
 # GoPath
-export GOPATH=$PROJECT_PATH/go
-export PATH=$PATH:$GOPATH/bin
-if [[ "$OSTYPE" == darwin* ]]; then
-    export GOROOT=/usr/local/opt/go/libexec
-    export PATH=$PATH:$GOROOT/bin
-else
-    export GOROOT=$HOME/go
-    export PATH=$PATH:$GOROOT/bin
-fi
+export GOVENDOR=$PROJECT_PATH/govendor
+export GOCODE=$PROJECT_PATH/gocode
+export GOPATH=$GOVENDOR:$GOCODE
+export PATH=$PATH:$GOVENDOR/bin:$GOCODE/bin
+# if [[ "$OSTYPE" == darwin* ]]; then
+#     export GOROOT=/usr/local/opt/go/libexec
+#     export PATH=$PATH:$GOROOT/bin
+# else
+#     export GOROOT=$HOME/go
+#     export PATH=$PATH:$GOROOT/bin
+# fi
 # Android
 export ANDROID_HOME=/usr/local/opt/android-sdk
 # Git diff highlight
@@ -54,6 +56,8 @@ export QT_IM_MODULE=ibus
 export PATH="/opt/hub:$PATH"
 # Gem
 export PATH="/home/rocco/.gem/ruby/2.2.0/bin:$PATH"
+# Heroku
+export PATH="/usr/local/heroku/bin:$PATH"
 ################################################################################
 # ALIAS
 # Sublime
@@ -142,3 +146,14 @@ fi
 # NVM
 export NVM_DIR="${HOME}/.nvm"
 [ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# PyEnv
+if (( $+commands[pyenv] )); then
+  export PATH="$HOME/.pyenv/bin:$PATH"
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
+
+# phpbrew
+[[ -s $HOME/.phpbrew/bashrc ]] && . $HOME/.phpbrew/bashrc
+# export PHPBREW_SET_PROMPT=1
