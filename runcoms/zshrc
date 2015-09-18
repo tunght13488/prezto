@@ -20,7 +20,7 @@ export HOMEBREW_GITHUB_API_TOKEN=401709b45efda5610240d15cb399d021922fc786
 # Compilation flags
 export ARCHFLAGS="-arch x86_64"
 # Python path
-export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
+# export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
 # GoPath
 export GOVENDOR=$PROJECT_PATH/govendor
 export GOCODE=$PROJECT_PATH/gocode
@@ -79,6 +79,7 @@ alias c="composer"
 # Vagrant
 alias v="vagrant"
 # Symfony
+alias sf="symfony"
 alias s="php app/console"
 # Git
 alias gfl="git flow"
