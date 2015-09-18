@@ -12,7 +12,7 @@ fi
 ################################################################################
 # VARIABLES
 export PROJECT_PATH=$HOME/Projects
-export PATH=$PATH:$HOME/bin:$HOME/.composer/vendor/bin
+# export PATH=$PATH:$HOME/bin:$HOME/.composer/vendor/bin
 # ssh
 export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
 # Homebrew
@@ -34,7 +34,7 @@ export PATH=$PATH:$GOVENDOR/bin:$GOCODE/bin
 #     export PATH=$PATH:$GOROOT/bin
 # fi
 # Android
-export ANDROID_HOME=/usr/local/opt/android-sdk
+# export ANDROID_HOME=/usr/local/opt/android-sdk
 # Git diff highlight
 if [[ "$OSTYPE" == darwin* ]]; then
   export PATH=$PATH:$(brew --prefix git)/share/git-core/contrib/diff-highlight
@@ -44,18 +44,18 @@ export DOCKER_HOST=tcp://docker.tunght.com:2376
 export DOCKER_CERT_PATH=$HOME/.docker
 export DOCKER_TLS_VERIFY=1
 # WebStorm
-export WEBSTORM_PATH=/opt/webstorm
-[[ -s $WEBSTORM_PATH ]] && export PATH=$PATH:$WEBSTORM_PATH/bin
+# export WEBSTORM_PATH=/opt/webstorm
+# [[ -s $WEBSTORM_PATH ]] && export PATH=$PATH:$WEBSTORM_PATH/bin
 # Facebook PathPicker
 export FPP_EDITOR=subl
 # Ibus
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
-# Hub
-export PATH="/opt/hub:$PATH"
+# # Hub
+# export PATH="/opt/hub:$PATH"
 # Gem
-export PATH="/home/rocco/.gem/ruby/2.2.0/bin:$PATH"
+# export PATH="/home/rocco/.gem/ruby/2.2.0/bin:$PATH"
 # Heroku
 export PATH="/usr/local/heroku/bin:$PATH"
 ################################################################################
@@ -134,14 +134,14 @@ function mr_base_same () {
 # MeRC
 [[ -s $HOME/.merc ]] && . $HOME/.merc
 # rvm
-if [[ -s $HOME/.rvm/scripts/rvm ]]; then
-  . $HOME/.rvm/scripts/rvm
+# if [[ -s $HOME/.rvm/scripts/rvm ]]; then
+  # . $HOME/.rvm/scripts/rvm
   # export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-fi
+# fi
 # Mark
-[[ -s $HOME/.mark.sh ]] && . $HOME/.mark.sh
+# [[ -s $HOME/.mark.sh ]] && . $HOME/.mark.sh
 # Perlbrew
-[[ -s $HOME/perl5/perlbrew/etc/bashrc ]] && . $HOME/perl5/perlbrew/etc/bashrc
+# [[ -s $HOME/perl5/perlbrew/etc/bashrc ]] && . $HOME/perl5/perlbrew/etc/bashrc
 # Wordpress
 [[ -s $HOME/wp-completion.bash ]] && . $HOME/wp-completion.bash
 # NVM
@@ -149,11 +149,11 @@ export NVM_DIR="${HOME}/.nvm"
 [ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # PyEnv
-if (( $+commands[pyenv] )); then
-  export PATH="$HOME/.pyenv/bin:$PATH"
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
-fi
+# if (( $+commands[pyenv] )); then
+#   export PATH="$HOME/.pyenv/bin:$PATH"
+#   eval "$(pyenv init -)"
+#   eval "$(pyenv virtualenv-init -)"
+# fi
 
 # phpbrew
 [[ -s $HOME/.phpbrew/bashrc ]] && . $HOME/.phpbrew/bashrc
