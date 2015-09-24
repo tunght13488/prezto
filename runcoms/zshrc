@@ -120,6 +120,7 @@ fi
 alias magento="./bin/magento"
 alias mage="magento"
 alias m="mage"
+alias mcc="m cache:flush && m cache:clean --all && rm -rf var/cache/* && rm -rf var/generation/* && m module:status"
 function mr_base () {
   mr config:set web/unsecure/base_url "http://$1/";
   mr config:set web/secure/base_url "https://$1/";
