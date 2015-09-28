@@ -130,6 +130,8 @@ function mr_base_same () {
   mr config:set web/unsecure/base_url "$1";
   mr config:set web/secure/base_url "$1";
 }
+# Tmux
+alias tmux="tmux -2"
 ################################################################################
 # LIBRARY
 # MeRC
