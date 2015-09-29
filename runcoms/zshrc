@@ -133,7 +133,7 @@ function mr_base_same () {
 # Tmux
 alias tmux="tmux -2"
 # npm_lazy
-alias lnpm="npm --registry http://localhost:8080/"
+alias lnpm="npm --registry http://localhost:4873/"
 ################################################################################
 # LIBRARY
 # MeRC
