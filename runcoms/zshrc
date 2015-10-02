@@ -154,11 +154,11 @@ export NVM_DIR="${HOME}/.nvm"
 [ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # PyEnv
-# if (( $+commands[pyenv] )); then
-#   export PATH="$HOME/.pyenv/bin:$PATH"
-#   eval "$(pyenv init -)"
-#   eval "$(pyenv virtualenv-init -)"
-# fi
+export PATH="$HOME/.pyenv/bin:$PATH"
+if (( $+commands[pyenv] )); then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
 
 # phpbrew
 [[ -s $HOME/.phpbrew/bashrc ]] && . $HOME/.phpbrew/bashrc
