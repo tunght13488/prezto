@@ -16,7 +16,7 @@ export PROJECT_PATH=$HOME/Projects
 # ssh
 export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
 # Homebrew
-export HOMEBREW_GITHUB_API_TOKEN=401709b45efda5610240d15cb399d021922fc786
+export HOMEBREW_GITHUB_API_TOKEN=5e1b7d0b3b26da7e4ece531011493c981f86be3f
 # Compilation flags
 export ARCHFLAGS="-arch x86_64"
 # Python path
