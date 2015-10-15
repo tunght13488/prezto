@@ -57,6 +57,7 @@ export QT_IM_MODULE=ibus
 # export PATH="/home/rocco/.gem/ruby/2.2.0/bin:$PATH"
 # Heroku
 export PATH="/usr/local/heroku/bin:$PATH"
+# export HISTCONTROL=ignoreboth
 ################################################################################
 # ALIAS
 # Sublime
@@ -133,6 +134,8 @@ function mr_base_same () {
 alias tmux="tmux -2"
 # npm_lazy
 alias lnpm="npm --registry http://localhost:4873/"
+# ag
+alias ag='ag --path-to-agignore=~/.agignore'
 ################################################################################
 # LIBRARY
 # MeRC
