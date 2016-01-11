@@ -103,8 +103,8 @@ alias sshconfig='$EDITOR ~/.ssh/config'
 alias currentwifi="networksetup -getairportnetwork en1"
 alias week='date +%V'
 # IP
-alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias ips="ifconfig -a | perl -nle'/(\d+.\d+.\d+.\d+)/ && print $1'"
+alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias myips="ifconfig -a | perl -nle'/(\d+.\d+.\d+.\d+)/ && print $1'"
 # File size
 alias fs="stat -f \"%z bytes\""
 if [[ "$OSTYPE" == darwin* ]]; then
