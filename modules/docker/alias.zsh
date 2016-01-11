@@ -60,3 +60,12 @@ dke() {
   dkv $1
   docker run --rm -it --volumes-from=$1 ubuntu /bin/bash
 }
+
+dkenter() {
+  docker exec -it $1 /bin/bash
+}
+
+function dkproxy() {
+  local port=${1:-80}
+  docker run -d -p $port:80 -v /var/run/docker.sock:/tmp/docker.sock --name nginx-proxy -t jwilder/nginx-proxy
+}

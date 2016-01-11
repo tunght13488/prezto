@@ -1,87 +1,176 @@
 #
-# A theme based on Steve Losh's Extravagant Prompt with vcs_info integration.
+# A theme based on Sorin Ionescu's Prompt
 #
 # Authors:
 #   Tung Ha <tunght13488@gmail.com>
 #
 
-function prompt_rocco_precmd {
-  # Check for untracked files or updated submodules since vcs_info does not.
-  if [[ -n $(git ls-files --other --exclude-standard 2> /dev/null) ]]; then
-    branch_format="(${_prompt_rocco_colors[1]}%b%f%u%c${_prompt_rocco_colors[4]}●%f)"
+#
+# 16 Terminal Colors
+# -- ---------------
+#  0 black
+#  1 red
+#  2 green
+#  3 yellow
+#  4 blue
+#  5 magenta
+#  6 cyan
+#  7 white
+#  8 bright black
+#  9 bright red
+# 10 bright green
+# 11 bright yellow
+# 12 bright blue
+# 13 bright magenta
+# 14 bright cyan
+# 15 bright white
+#
+
+# Load dependencies.
+pmodload 'helper'
+
+function prompt_rocco_docker_machine () {
+  local format=${1:- [%s]}
+  if test ${DOCKER_MACHINE_NAME}; then
+    local _status
+    if test ${DOCKER_MACHINE_PS1_SHOWSTATUS:-false} = true; then
+      _status=$(docker-machine status ${DOCKER_MACHINE_NAME})
+      case ${_status} in
+        Running)
+          _status=' R'
+          ;;
+        Stopping)
+          _status=' R->S'
+          ;;
+        Starting)
+          _status=' S->R'
+          ;;
+        Error|Timeout)
+          _status=' E'
+          ;;
+        *)
+          # Just consider everything elase as 'stopped'
+          _status=' S'
+          ;;
+      esac
+    fi
+    _prompt_rocco_docker_machine=" (dm:${DOCKER_MACHINE_NAME}${_status})"
+  fi
+}
+
+function prompt_rocco_pwd {
+  local pwd="${PWD/#$HOME/~}"
+
+  if [[ "$pwd" == (#m)[/~] ]]; then
+    _prompt_rocco_pwd="$MATCH"
+    unset MATCH
   else
-    branch_format="(${_prompt_rocco_colors[1]}%b%f%u%c)"
+    _prompt_rocco_pwd="${${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%}"
+  fi
+}
+
+function prompt_rocco_git_info {
+  if (( _prompt_rocco_precmd_async_pid > 0 )); then
+    # Append Git status.
+    if [[ -s "$_prompt_rocco_precmd_async_data" ]]; then
+      alias typeset='typeset -g'
+      source "$_prompt_rocco_precmd_async_data"
+      RPROMPT+='${git_info:+${(e)git_info[status]}}'
+      unalias typeset
+    fi
+
+    # Reset PID.
+    _prompt_rocco_precmd_async_pid=0
+
+    # Redisplay prompt.
+    zle && zle reset-prompt
+  fi
+}
+
+function prompt_rocco_precmd_async {
+  # Get Git repository information.
+  if (( $+functions[git-info] )); then
+    git-info
+    typeset -p git_info >! "$_prompt_rocco_precmd_async_data"
   fi
 
-  zstyle ':vcs_info:*:prompt:*' formats "${branch_format}"
+  # Signal completion to parent process.
+  kill -WINCH $$
+}
 
-  vcs_info 'prompt'
+function prompt_rocco_precmd {
+  setopt LOCAL_OPTIONS
+  unsetopt XTRACE KSH_ARRAYS
 
-  if (( $+functions[python-info] )); then
-    python-info
+  # Format PWD.
+  prompt_rocco_pwd
+
+  prompt_rocco_docker_machine
+
+  # Define prompts.
+  RPROMPT='${editor_info[overwrite]}%(?:: %F{1}⏎%f)${VIM:+" %B%F{6}V%f%b"}'
+
+  # Kill the old process of slow commands if it is still running.
+  if (( _prompt_rocco_precmd_async_pid > 0 )); then
+    kill -KILL "$_prompt_rocco_precmd_async_pid" &>/dev/null
   fi
+
+  # Compute slow commands in the background.
+  trap prompt_rocco_git_info WINCH
+  prompt_rocco_precmd_async &!
+  _prompt_rocco_precmd_async_pid=$!
 }
 
 function prompt_rocco_setup {
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
   prompt_opts=(cr percent subst)
+  _prompt_rocco_precmd_async_pid=0
+  _prompt_rocco_precmd_async_data="${TMPPREFIX}-prompt_rocco_data"
 
   # Load required functions.
   autoload -Uz add-zsh-hook
-  autoload -Uz vcs_info
 
-  # Add hook for calling vcs_info before each command.
+  # Add hook for calling git-info before each command.
   add-zsh-hook precmd prompt_rocco_precmd
 
-  # Use extended color pallete if available.
-  if [[ $TERM = *256color* || $TERM = *rxvt* ]]; then
-    _prompt_rocco_colors=(
-      "%F{81}"  # Turquoise
-      "%F{166}" # Orange
-      "%F{135}" # Purple
-      "%F{161}" # Hotpink
-      "%F{118}" # Limegreen
-    )
-  else
-    _prompt_rocco_colors=(
-      "%F{cyan}"
-      "%F{yellow}"
-      "%F{magenta}"
-      "%F{red}"
-      "%F{green}"
-    )
-  fi
+  # Set editor-info parameters.
+  zstyle ':prezto:module:editor:info:completing' format '%B%F{7}...%f%b'
+  zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{1}❯%F{3}❯%F{2}❯%f%b'
+  zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format ' %F{3}♺%f'
+  zstyle ':prezto:module:editor:info:keymap:alternate' format ' %B%F{2}❮%F{3}❮%F{1}❮%f%b'
 
-  # Formats:
-  #   %b - branchname
-  #   %u - unstagedstr (see below)
-  #   %c - stagedstr (see below)
-  #   %a - action (e.g. rebase-i)
-  #   %R - repository path
-  #   %S - path in the repository
-  local branch_format="(${_prompt_rocco_colors[1]}%b%f%u%c)"
-  local action_format="(${_prompt_rocco_colors[5]}%a%f)"
-  local unstaged_format="${_prompt_rocco_colors[2]}●%f"
-  local staged_format="${_prompt_rocco_colors[5]}●%f"
-
-  # Set vcs_info parameters.
-  zstyle ':vcs_info:*' enable bzr git hg svn
-  zstyle ':vcs_info:*:prompt:*' check-for-changes true
-  zstyle ':vcs_info:*:prompt:*' unstagedstr "${unstaged_format}"
-  zstyle ':vcs_info:*:prompt:*' stagedstr "${staged_format}"
-  zstyle ':vcs_info:*:prompt:*' actionformats "${branch_format}${action_format}"
-  zstyle ':vcs_info:*:prompt:*' formats "${branch_format}"
-  zstyle ':vcs_info:*:prompt:*' nvcsformats   ""
-
-  # Set python-info parameters.
-  zstyle ':prezto:module:python:info:virtualenv' format '(%v)'
+  # Set git-info parameters.
+  zstyle ':prezto:module:git:info' verbose 'yes'
+  zstyle ':prezto:module:git:info:action' format '%F{7}:%f%%B%F{9}%s%f%%b'
+  zstyle ':prezto:module:git:info:added' format ' %%B%F{2}✚%f%%b'
+  zstyle ':prezto:module:git:info:ahead' format ' %%B%F{13}⬆%f%%b'
+  zstyle ':prezto:module:git:info:behind' format ' %%B%F{13}⬇%f%%b'
+  zstyle ':prezto:module:git:info:branch' format ' %%B%F{2}%b%f%%b'
+  zstyle ':prezto:module:git:info:commit' format ' %%B%F{3}%.7c%f%%b'
+  zstyle ':prezto:module:git:info:deleted' format ' %%B%F{1}✖%f%%b'
+  zstyle ':prezto:module:git:info:modified' format ' %%B%F{4}✱%f%%b'
+  zstyle ':prezto:module:git:info:position' format ' %%B%F{13}%p%f%%b'
+  zstyle ':prezto:module:git:info:renamed' format ' %%B%F{5}➜%f%%b'
+  zstyle ':prezto:module:git:info:stashed' format ' %%B%F{6}✭%f%%b'
+  zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{3}═%f%%b'
+  zstyle ':prezto:module:git:info:untracked' format ' %%B%F{7}◼%f%%b'
+  zstyle ':prezto:module:git:info:keys' format \
+    'status' '$(coalesce "%b" "%p" "%c")%s%A%B%S%a%d%m%r%U%u'
 
   # Define prompts.
-  PROMPT="
-${_prompt_rocco_colors[3]}%n%f@${_prompt_rocco_colors[2]}%m%f:${_prompt_rocco_colors[5]}%~%f"'${vcs_info_msg_0_}'"
-"'$python_info[virtualenv]'"$ "
+  PROMPT='${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{4}${_prompt_rocco_pwd}${_prompt_rocco_docker_machine}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
   RPROMPT=''
+  SPROMPT='zsh: correct %F{1}%R%f to %F{2}%r%f [nyae]? '
+}
+
+function prompt_rocco_preview {
+  local +h PROMPT=''
+  local +h RPROMPT=''
+  local +h SPROMPT=''
+
+  editor-info 2>/dev/null
+  prompt_preview_theme 'rocco'
 }
 
 prompt_rocco_setup "$@"
