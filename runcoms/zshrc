@@ -64,11 +64,7 @@ export PATH="/usr/local/heroku/bin:$PATH"
 ################################################################################
 # ALIAS
 # Sublime
-if [[ "$OSTYPE" == darwin* ]]; then
-  alias st="$HOME/bin/subl"
-else
-  alias st="/usr/bin/subl"
-fi
+alias st="subl"
 alias todo="st $HOME/my.todo"
 # Laravel
 alias lv="php artisan"
