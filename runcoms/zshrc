@@ -82,9 +82,9 @@ alias sf="symfony"
 alias s="php app/console"
 # Git
 alias gfl="git flow"
-if (( $+commands[hub] )); then
-  eval "$(hub alias -s)"
-fi
+# if (( $+commands[hub] )); then
+#   eval "$(hub alias -s)"
+# fi
 # chmod
 alias mx='chmod a+x'
 alias 000='chmod 000'
