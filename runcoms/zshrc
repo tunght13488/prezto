@@ -15,6 +15,8 @@ fi
 export PROJECT_PATH=$HOME/Projects
 # export PATH=$PATH:$HOME/bin:$HOME/.composer/vendor/bin
 export CGR_BIN_DIR=$HOME/.composer/vendor/bin
+export PATH=$HOME/.local/bin:$PATH
+export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
 # ssh
 export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
 # Compilation flags
@@ -72,9 +74,9 @@ alias lv="php artisan"
 alias a="php artisan"
 alias en="envoy run"
 # Composer
-if (( $+commands[hhvm] )); then
-  alias composer="hhvm -v ResourceLimit.SocketDefaultTimeout=180 -v Http.SlowQueryThreshold=180000 $(which composer)"
-fi
+# if (( $+commands[hhvm] )); then
+#   alias composer="hhvm -v ResourceLimit.SocketDefaultTimeout=180 -v Http.SlowQueryThreshold=180000 $(which composer)"
+# fi
 alias c="composer"
 # Vagrant
 alias v="vagrant"
@@ -122,6 +124,8 @@ alias magento="./bin/magento"
 alias mage="magento"
 alias m="mage"
 alias mcc="m cache:flush && m cache:clean --all && rm -rf var/cache/* && rm -rf var/generation/* && m module:status"
+alias mr="n98-magerun.phar"
+alias mr2="n98-magerun2.phar"
 function mr_base () {
   mr config:set web/unsecure/base_url "http://$1/";
   mr config:set web/secure/base_url "https://$1/";
@@ -208,3 +212,9 @@ fi
 ###-end-pm2-completion-###
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+transfer() { if [ $# -eq 0 ]; then echo "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"; return 1; fi
+tmpfile=$( mktemp -t transferXXX ); if tty -s; then basefile=$(basename "$1" | sed -e 's/[^a-zA-Z0-9._-]/-/g'); curl --progress-bar --upload-file "$1" "https://transfer.sh/$basefile" >> $tmpfile; else curl --progress-bar --upload-file "-" "https://transfer.sh/$1" >> $tmpfile ; fi; cat $tmpfile; rm -f $tmpfile; }
+
+test -e "$PROJECT_PATH/github/supercrabtree/k/k.sh" && source "$PROJECT_PATH/github/supercrabtree/k/k.sh"
+alias ka="k -Ah --no-vcs"
