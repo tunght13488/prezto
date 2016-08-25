@@ -13,8 +13,8 @@ fi
 [[ -s "${ZDOTDIR:-$HOME}/.zprezto/.ztoken" ]] && . "${ZDOTDIR:-$HOME}/.zprezto/.ztoken"
 # VARIABLES
 export PROJECT_PATH=$HOME/Projects
-# export PATH=$PATH:$HOME/bin:$HOME/.composer/vendor/bin
-export CGR_BIN_DIR=$HOME/.composer/vendor/bin
+export PATH=$PATH:$HOME/bin:$HOME/.config/composer/vendor/bin
+export CGR_BIN_DIR=$HOME/.config/composer/vendor/bin
 export PATH=$HOME/.local/bin:$PATH
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
 # ssh
@@ -218,3 +218,5 @@ tmpfile=$( mktemp -t transferXXX ); if tty -s; then basefile=$(basename "$1" | s
 
 test -e "$PROJECT_PATH/github/supercrabtree/k/k.sh" && source "$PROJECT_PATH/github/supercrabtree/k/k.sh"
 alias ka="k -Ah --no-vcs"
+
+test -e "$PROJECT_PATH/github/fcambus/ansiweather/ansiweather.plugin.zsh" && source "$PROJECT_PATH/github/fcambus/ansiweather/ansiweather.plugin.zsh"
