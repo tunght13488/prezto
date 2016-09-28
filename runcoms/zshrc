@@ -233,7 +233,11 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 transfer() { if [ $# -eq 0 ]; then echo "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"; return 1; fi
 tmpfile=$( mktemp -t transferXXX ); if tty -s; then basefile=$(basename "$1" | sed -e 's/[^a-zA-Z0-9._-]/-/g'); curl --progress-bar --upload-file "$1" "https://transfer.sh/$basefile" >> $tmpfile; else curl --progress-bar --upload-file "-" "https://transfer.sh/$1" >> $tmpfile ; fi; cat $tmpfile; rm -f $tmpfile; }
 
-test -e "$PROJECT_PATH/github/supercrabtree/k/k.sh" && source "$PROJECT_PATH/github/supercrabtree/k/k.sh"
+test -e "$HOME/k/k.sh" && source "$HOME/k/k.sh"
 alias ka="k -Ah --no-vcs"
 
 test -e "$PROJECT_PATH/github/fcambus/ansiweather/ansiweather.plugin.zsh" && source "$PROJECT_PATH/github/fcambus/ansiweather/ansiweather.plugin.zsh"
+
+# zsh-nvm
+[[ -s "${HOME}/.zsh-nvm/zsh-nvm.plugin.zsh" ]] && . "${HOME}/.zsh-nvm/zsh-nvm.plugin.zsh"
+[[ -s "${HOME}/.zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh" ]] && . "${HOME}/.zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh"
