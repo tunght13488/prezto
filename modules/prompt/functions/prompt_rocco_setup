@@ -105,7 +105,7 @@ function prompt_rocco_precmd {
   # Format PWD.
   prompt_rocco_pwd
 
-  prompt_rocco_docker_machine
+  #prompt_rocco_docker_machine
 
   # Define prompts.
   RPROMPT='${editor_info[overwrite]}%(?:: %F{1}⏎%f)${VIM:+" %B%F{6}V%f%b"}'

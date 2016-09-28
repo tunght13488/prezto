@@ -140,7 +140,7 @@ zstyle ':prezto:module:prompt' theme 'rocco'
 #
 
 # Set the SSH identities to load into the agent.
-zstyle ':prezto:module:ssh:load' identities 'id_rsa' 'id_rsa-tunght13488.dev@gmail.com'
+zstyle ':prezto:module:ssh:load' identities 'id_rsa' 'id_rsa-tunght13488.dev@gmail.com' 'id_rsa-playhousedigital.com'
 
 #
 # Syntax Highlighting
