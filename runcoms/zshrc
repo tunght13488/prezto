@@ -14,6 +14,7 @@ fi
 # VARIABLES
 export PROJECT_PATH=$HOME/Projects
 export PATH=$PATH:$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$PROJECT_PATH/other/pebble/pebble-dev/pebble-sdk-4.3-linux64/bin
+export PATH="/usr/lib/ccache/bin/:$PATH"
 export CGR_BIN_DIR=$HOME/.config/composer/vendor/bin
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
 # ssh
@@ -127,7 +128,8 @@ fi
 alias magento="./bin/magento"
 alias mage="magento"
 alias m="mr2"
-alias mcc="m cache:flush && m cache:clean --all && rm -rf var/cache/* && rm -rf var/generation/* && m module:status"
+alias mcc="/usr/bin/rm -rf var/generation/* var/session/* var/cache/* var/page_cache/* && m cache:flush"
+alias mcf="/usr/bin/rm -rf pub/static/* var/view_preprocessed/* && m c:f"
 alias mr="n98-magerun.phar"
 alias mr2="n98-magerun2.phar"
 function mr_base () {
@@ -143,7 +145,7 @@ alias tmux="tmux -2"
 # npm_lazy
 alias lnpm="npm --registry http://localhost:4873/"
 # ag
-alias ag='ag --path-to-agignore=~/.agignore'
+alias ag='ag --path-to-ignore ~/.agignore'
 ################################################################################
 # LIBRARY
 # MeRC
