@@ -146,6 +146,8 @@ alias tmux="tmux -2"
 alias lnpm="npm --registry http://localhost:4873/"
 # ag
 alias ag='ag --path-to-ignore ~/.agignore'
+# Anybar
+function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
 ################################################################################
 # LIBRARY
 # MeRC
