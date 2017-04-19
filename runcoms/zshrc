@@ -128,7 +128,9 @@ fi
 alias magento="./bin/magento"
 alias mage="magento"
 alias m="mr2"
-alias mcc="/usr/bin/rm -rf var/generation/* var/session/* var/cache/* var/page_cache/* && m cache:flush"
+alias pestle="pestle.phar"
+alias mp="pestle"
+alias mcc="/usr/bin/rm -rf var/di var/generation/* var/session/* var/cache/* var/page_cache/* && m cache:flush"
 alias mcf="/usr/bin/rm -rf pub/static/* var/view_preprocessed/* && m c:f"
 alias mr="n98-magerun.phar"
 alias mr2="n98-magerun2.phar"
@@ -148,6 +150,9 @@ alias lnpm="npm --registry http://localhost:4873/"
 alias ag='ag --path-to-ignore ~/.agignore'
 # Anybar
 function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
+# Xdebug
+alias xy='export XDEBUG_CONFIG="remote_enable=1 remote_mode=req remote_port=9000 remote_host=127.0.0.1 remote_connect_back=0"'
+alias xn='unset XDEBUG_CONFIG'
 ################################################################################
 # LIBRARY
 # MeRC
