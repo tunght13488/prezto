@@ -221,10 +221,10 @@ dkalias() { alias | grep 'docker' | sed "s/^\([^=]*\)=\(.*\)/\1 => \2/"| sed "s/
 
 alias dkv="docker inspect --format '{{ .Volumes }}'"
 
-dke() {
-  dkv $1
-  docker run --rm -it --volumes-from=$1 ubuntu /bin/bash
-}
+# dke() {
+#   dkv $1
+#   docker run --rm -it --volumes-from=$1 ubuntu /bin/bash
+# }
 
 # dkenter() {
 #   docker exec -it $1 /bin/bash
