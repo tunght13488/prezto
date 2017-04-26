@@ -29,34 +29,34 @@
 # Load dependencies.
 pmodload 'helper'
 
-function prompt_rocco_docker_machine () {
-  local format=${1:- [%s]}
-  if test ${DOCKER_MACHINE_NAME}; then
-    local _status
-    if test ${DOCKER_MACHINE_PS1_SHOWSTATUS:-false} = true; then
-      _status=$(docker-machine status ${DOCKER_MACHINE_NAME})
-      case ${_status} in
-        Running)
-          _status=' R'
-          ;;
-        Stopping)
-          _status=' R->S'
-          ;;
-        Starting)
-          _status=' S->R'
-          ;;
-        Error|Timeout)
-          _status=' E'
-          ;;
-        *)
-          # Just consider everything elase as 'stopped'
-          _status=' S'
-          ;;
-      esac
-    fi
-    _prompt_rocco_docker_machine=" (dm:${DOCKER_MACHINE_NAME}${_status})"
-  fi
-}
+# function prompt_rocco_docker_machine () {
+#   local format=${1:- [%s]}
+#   if test ${DOCKER_MACHINE_NAME}; then
+#     local _status
+#     if test ${DOCKER_MACHINE_PS1_SHOWSTATUS:-false} = true; then
+#       _status=$(docker-machine status ${DOCKER_MACHINE_NAME})
+#       case ${_status} in
+#         Running)
+#           _status=' R'
+#           ;;
+#         Stopping)
+#           _status=' R->S'
+#           ;;
+#         Starting)
+#           _status=' S->R'
+#           ;;
+#         Error|Timeout)
+#           _status=' E'
+#           ;;
+#         *)
+#           # Just consider everything elase as 'stopped'
+#           _status=' S'
+#           ;;
+#       esac
+#     fi
+#     _prompt_rocco_docker_machine=" (dm:${DOCKER_MACHINE_NAME}${_status})"
+#   fi
+# }
 
 function prompt_rocco_pwd {
   local pwd="${PWD/#$HOME/~}"
@@ -159,7 +159,7 @@ function prompt_rocco_setup {
     'status' '$(coalesce "%b" "%p" "%c")%s%A%B%S%a%d%m%r%U%u'
 
   # Define prompts.
-  PROMPT='${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{4}${_prompt_rocco_pwd}${_prompt_rocco_docker_machine}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
+  PROMPT='${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{4}${_prompt_rocco_pwd}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
   RPROMPT=''
   SPROMPT='zsh: correct %F{1}%R%f to %F{2}%r%f [nyae]? '
 }
