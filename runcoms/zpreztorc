@@ -121,6 +121,9 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 # zstyle ':prezto:module:prompt' theme 'rocco'
 # zstyle ':prezto:module:prompt' theme 'agnoster'
 
+# Set how themes that use promptpwd function display the pwd, can be 'short', 'long', or 'full'
+# zstyle ':prezto:module:prompt' pwd-length 'short'
+
 #
 # Ruby
 #
