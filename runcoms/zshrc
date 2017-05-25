@@ -70,6 +70,10 @@ export PATH="/usr/local/heroku/bin:$PATH"
 export BROWSER="google-chrome-stable"
 ################################################################################
 # ALIAS
+# PHP
+if (( $+commands[php70] )); then
+  alias php="php70"
+fi
 # Sublime
 alias st="subl"
 alias todo="st $HOME/my.todo"
@@ -81,7 +85,7 @@ alias en="envoy run"
 # if (( $+commands[hhvm] )); then
 #   alias composer="hhvm -v ResourceLimit.SocketDefaultTimeout=180 -v Http.SlowQueryThreshold=180000 $(which composer)"
 # fi
-alias c="composer"
+alias c="php $(which composer)"
 # Vagrant
 alias v="vagrant"
 # Symfony
@@ -125,15 +129,15 @@ if [[ "$OSTYPE" == darwin* ]]; then
   alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
 fi
 # Magento 2
-alias magento="./bin/magento"
-alias mage="magento"
+alias magento="php bin/magento"
+alias mage="php $(which magento)"
 alias m="mr2"
-alias pestle="pestle.phar"
+alias pestle="php $(which pestle.phar)"
 alias mp="pestle"
 alias mcc="/usr/bin/rm -rf var/di var/generation/* var/session/* var/cache/* var/page_cache/* && m cache:flush"
 alias mcf="/usr/bin/rm -rf pub/static/* var/view_preprocessed/* && m c:f"
-alias mr="n98-magerun.phar"
-alias mr2="n98-magerun2.phar"
+alias mr="php $(which n98-magerun.phar)"
+alias mr2="php $(which n98-magerun2.phar)"
 function mr_base () {
   mr config:set web/unsecure/base_url "http://$1/";
   mr config:set web/secure/base_url "https://$1/";
