@@ -9,29 +9,29 @@ Installation
 ------------
 
 Prezto will work with any recent release of Zsh, but the minimum required
-version is 4.3.17.
+version is 4.3.11.
 
   1. Launch Zsh:
 
-```
-zsh
-```
+     ```console
+     zsh
+     ```
 
   2. Clone the repository:
 
-```
-git clone --recursive https://github.com/tunght13488/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-```
+     ```console
+     git clone --recursive https://github.com/tunght13488/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+     ```
 
   3. Create a new Zsh configuration by copying the Zsh configuration files
      provided:
 
-```
-setopt EXTENDED_GLOB
-for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
-  ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
-done
-```
+     ```sh
+     setopt EXTENDED_GLOB
+     for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+       ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+     done
+     ```
 
      Note: If you already have any of the given config files, ln will error. In
      simple cases you can add `source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"` to
@@ -41,9 +41,9 @@ done
 
   4. Set Zsh as your default shell:
 
-```
-chsh -s /bin/zsh
-```
+     ```console
+     chsh -s /bin/zsh
+     ```
 
   5. Open a new Zsh terminal window or tab.
 
@@ -56,10 +56,17 @@ window or tab.
 Updating
 --------
 
-Pull the latest changes and update submodules.
+Run `zprezto-update` to automatically check if there is an update to zprezto.
+If there are no file conflicts, zprezto and its submodules will be
+automatically updated. If there are conflicts you will instructed to go into
+the `$ZPREZTODIR` directory and resolve them yourself.
 
-```
-git pull && git submodule update --init --recursive
+To pull the latest changes and update submodules manually:
+
+```console
+cd $ZPREZTODIR
+git pull
+git submodule update --init --recursive
 ```
 
 Usage
