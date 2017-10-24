@@ -13,7 +13,7 @@ fi
 [[ -s "${ZDOTDIR:-$HOME}/.zprezto/.ztoken" ]] && . "${ZDOTDIR:-$HOME}/.zprezto/.ztoken"
 # VARIABLES
 export PROJECT_PATH=$HOME/Projects
-export PATH=$PATH:$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$PROJECT_PATH/other/pebble/pebble-dev/pebble-sdk-4.3-linux64/bin
+export PATH=$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
 export PATH="/usr/lib/ccache/bin/:$PATH"
 export CGR_BIN_DIR=$HOME/.config/composer/vendor/bin
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
@@ -136,6 +136,7 @@ alias pestle="php $(which pestle.phar)"
 alias mp="pestle"
 alias mcc="/usr/bin/rm -rf var/di var/generation/* var/session/* var/cache/* var/page_cache/* && m cache:flush"
 alias mcf="/usr/bin/rm -rf pub/static/* var/view_preprocessed/* && m c:f"
+alias mcc="mcc && m setup:upgrade"
 alias mr="php $(which n98-magerun.phar)"
 alias mr2="php $(which n98-magerun2.phar)"
 function mr_base () {
