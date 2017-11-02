@@ -136,7 +136,7 @@ alias pestle="php $(which pestle.phar)"
 alias mp="pestle"
 alias mcc="/usr/bin/rm -rf var/di var/generation/* var/session/* var/cache/* var/page_cache/* && m cache:flush"
 alias mcf="/usr/bin/rm -rf pub/static/* var/view_preprocessed/* && m c:f"
-alias mcc="mcc && m setup:upgrade"
+alias mcu="mcc && m setup:upgrade"
 alias mr="php $(which n98-magerun.phar)"
 alias mr2="php $(which n98-magerun2.phar)"
 function mr_base () {
@@ -146,6 +146,21 @@ function mr_base () {
 function mr_base_same () {
   mr config:set web/unsecure/base_url "$1";
   mr config:set web/secure/base_url "$1";
+}
+function xdebug () {
+  case $1 in
+    on)
+      [ -f /etc/php70/conf.d/xdebug.ini.deactivated ] && sudo mv /etc/php70/conf.d/xdebug.ini.deactivated /etc/php70/conf.d/xdebug.ini
+      sudo systemctl restart php70-fpm
+    ;;
+    off)
+      [ -f /etc/php70/conf.d/xdebug.ini ] && sudo mv /etc/php70/conf.d/xdebug.ini /etc/php70/conf.d/xdebug.ini.deactivated
+      sudo systemctl restart php70-fpm
+    ;;
+    *)
+      echo "Usage: xdebug on|off"
+    ;;
+  esac
 }
 # Tmux
 alias tmux="tmux -2"
