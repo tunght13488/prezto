@@ -152,10 +152,12 @@ function xdebug () {
     on)
       [ -f /etc/php70/conf.d/xdebug.ini.deactivated ] && sudo mv /etc/php70/conf.d/xdebug.ini.deactivated /etc/php70/conf.d/xdebug.ini
       sudo systemctl restart php70-fpm
+      export XDEBUG_CONFIG="idekey=PHPSTORM"
     ;;
     off)
       [ -f /etc/php70/conf.d/xdebug.ini ] && sudo mv /etc/php70/conf.d/xdebug.ini /etc/php70/conf.d/xdebug.ini.deactivated
       sudo systemctl restart php70-fpm
+      unset XDEBUG_CONFIG
     ;;
     *)
       echo "Usage: xdebug on|off"
