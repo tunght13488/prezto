@@ -73,9 +73,9 @@ export BROWSER="google-chrome-stable"
 ################################################################################
 # ALIAS
 # PHP
-if (( $+commands[php70] )); then
-  alias php="php70"
-fi
+# if (( $+commands[php70] )); then
+#   alias php="php70"
+# fi
 # Sublime
 alias st="subl"
 alias todo="st $HOME/my.todo"
@@ -143,6 +143,8 @@ alias mccfu="mccf && m setup:upgrade"
 alias mcu="mcc && m setup:upgrade"
 alias mr="php $(which n98-magerun.phar)"
 alias mr2="php $(which n98-magerun2.phar)"
+alias q="q -O -H"
+alias qp="q -d '|'"
 function mr_base () {
   mr config:set web/unsecure/base_url "http://$1/";
   mr config:set web/secure/base_url "https://$1/";
