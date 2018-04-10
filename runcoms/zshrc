@@ -182,6 +182,8 @@ function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
 # Xdebug
 alias xy='export XDEBUG_CONFIG="remote_enable=1 remote_mode=req remote_port=9000 remote_host=127.0.0.1 remote_connect_back=0"'
 alias xn='unset XDEBUG_CONFIG'
+# howdoi
+alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
 ################################################################################
 # LIBRARY
 # MeRC
