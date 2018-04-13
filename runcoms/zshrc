@@ -17,8 +17,8 @@ export PATH=$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$HOME/.
 export PATH="/usr/lib/ccache/bin/:$PATH"
 export CGR_BIN_DIR=$HOME/.config/composer/vendor/bin
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
-export EDITOR="nvim"
-export VISUAL="nvim"
+export EDITOR="vim"
+export VISUAL="vim"
 # ssh
 export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
 # Compilation flags
