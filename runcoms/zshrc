@@ -57,7 +57,7 @@ export OVPN_DATA="ovpn-data"
 # Facebook PathPicker
 export FPP_EDITOR=subl
 # Ibus
-export GTK_IM_MODULE=ibus
+# export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
 # Sound for Arch
