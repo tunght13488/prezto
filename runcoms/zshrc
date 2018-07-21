@@ -88,11 +88,12 @@ alias en="envoy run"
 #   alias composer="hhvm -v ResourceLimit.SocketDefaultTimeout=180 -v Http.SlowQueryThreshold=180000 $(which composer)"
 # fi
 alias c="php $(which composer)"
+alias c7="php70 $(which composer)"
 # Vagrant
 alias v="vagrant"
 # Symfony
 alias sf="symfony"
-alias s="php app/console"
+alias s="php bin/console"
 # Git
 alias gfl="git flow"
 if (( $+commands[hub] )); then
@@ -159,11 +160,15 @@ function xdebug () {
     on)
       [ -f /etc/php70/conf.d/xdebug.ini.deactivated ] && sudo mv /etc/php70/conf.d/xdebug.ini.deactivated /etc/php70/conf.d/xdebug.ini
       sudo systemctl restart php70-fpm
+      [ -f /etc/php/conf.d/xdebug.ini.deactivated ] && sudo mv /etc/php/conf.d/xdebug.ini.deactivated /etc/php/conf.d/xdebug.ini
+      sudo systemctl restart php-fpm
       export XDEBUG_CONFIG="idekey=PHPSTORM"
     ;;
     off)
       [ -f /etc/php70/conf.d/xdebug.ini ] && sudo mv /etc/php70/conf.d/xdebug.ini /etc/php70/conf.d/xdebug.ini.deactivated
       sudo systemctl restart php70-fpm
+      [ -f /etc/php/conf.d/xdebug.ini ] && sudo mv /etc/php/conf.d/xdebug.ini /etc/php/conf.d/xdebug.ini.deactivated
+      sudo systemctl restart php-fpm
       unset XDEBUG_CONFIG
     ;;
     *)
