@@ -72,6 +72,8 @@ export PATH="/usr/local/heroku/bin:$PATH"
 export BROWSER="google-chrome-stable"
 ################################################################################
 # ALIAS
+# Update packages
+alias updpkg="updpkgsums && /bin/rm .SRCINFO && makepkg --printsrcinfo > .SRCINFO"
 # PHP
 # if (( $+commands[php70] )); then
 #   alias php="php70"
@@ -138,6 +140,7 @@ alias m="mr2"
 alias pestle="php $(which pestle.phar)"
 alias mp="pestle"
 alias mrf="redis-cli flushall"
+alias mc="mg2-codegen"
 alias mcc="/usr/bin/rm -rf var/di var/generation/* var/session/* var/cache/* var/page_cache/* && m c:f"
 alias mcf="/usr/bin/rm -rf pub/static/* var/view_preprocessed/* && m c:f"
 alias mccf="/usr/bin/rm -rf var/di var/generation/* var/session/* var/cache/* var/page_cache/* pub/static/* var/view_preprocessed/* && m c:f"
@@ -189,6 +192,18 @@ alias xy='export XDEBUG_CONFIG="remote_enable=1 remote_mode=req remote_port=9000
 alias xn='unset XDEBUG_CONFIG'
 # howdoi
 alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
+# yii
+function y {
+  if [[ -s ./yiic ]] then
+    ./yiic "$@"
+  elif [[ -s ./protected/yiic ]]; then
+    ./protected/yiic "$@"
+  else
+    echo "Yii not found"
+    return 1
+  fi
+  return 0
+}
 ################################################################################
 # LIBRARY
 # MeRC
@@ -207,6 +222,7 @@ alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
 # NVM
 export NVM_DIR="${HOME}/.nvm"
 [ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+export PATH="$(yarn global bin):$PATH"
 
 # PyEnv
 # export PATH="${HOME}/.local/bin:$PATH"
