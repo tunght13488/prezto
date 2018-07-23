@@ -134,10 +134,10 @@ if [[ "$OSTYPE" == darwin* ]]; then
   alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
 fi
 # Magento 2
-alias magento="php bin/magento"
-alias mage="php $(which magento)"
+alias magento="php70 bin/magento"
+alias mage="php70 $(which magento)"
 alias m="mr2"
-alias pestle="php $(which pestle.phar)"
+alias pestle="php70 $(which pestle.phar)"
 alias mp="pestle"
 alias mrf="redis-cli flushall"
 alias mc="mg2-codegen"
@@ -146,8 +146,8 @@ alias mcf="/usr/bin/rm -rf pub/static/* var/view_preprocessed/* && m c:f"
 alias mccf="/usr/bin/rm -rf var/di var/generation/* var/session/* var/cache/* var/page_cache/* pub/static/* var/view_preprocessed/* && m c:f"
 alias mccfu="mccf && m setup:upgrade"
 alias mcu="mcc && m setup:upgrade"
-alias mr="php $(which n98-magerun.phar)"
-alias mr2="php $(which n98-magerun2.phar)"
+alias mr="php70 $(which n98-magerun.phar)"
+alias mr2="php70 $(which n98-magerun2.phar)"
 alias q="q -O -H"
 alias qp="q -d '|'"
 function mr_base () {
@@ -176,6 +176,20 @@ function xdebug () {
     ;;
     *)
       echo "Usage: xdebug on|off"
+    ;;
+  esac
+}
+function p7 () {
+  case $1 in
+    on)
+      ln -sf /usr/bin/php70 "$HOME/bin/php" && rehash
+    ;;
+    off)
+      [ -f "$HOME/bin/php" ] && unlink "$HOME/bin/php" && rehash
+    ;;
+    *)
+      echo "Alias php to php70"
+      echo "Usage: 07 on|off"
     ;;
   esac
 }
