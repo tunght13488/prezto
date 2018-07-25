@@ -96,6 +96,7 @@ alias v="vagrant"
 # Symfony
 alias sf="symfony"
 alias s="php bin/console"
+alias srs="s d:d:d --force && s d:d:cr && s d:s:c && s d:f:l --append && s h:f:l --append"
 # Git
 alias gfl="git flow"
 if (( $+commands[hub] )); then
