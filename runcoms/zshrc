@@ -162,17 +162,33 @@ function mr_base_same () {
 function xdebug () {
   case $1 in
     on)
-      [ -f /etc/php70/conf.d/xdebug.ini.deactivated ] && sudo mv /etc/php70/conf.d/xdebug.ini.deactivated /etc/php70/conf.d/xdebug.ini
-      sudo systemctl restart php70-fpm
-      [ -f /etc/php/conf.d/xdebug.ini.deactivated ] && sudo mv /etc/php/conf.d/xdebug.ini.deactivated /etc/php/conf.d/xdebug.ini
-      sudo systemctl restart php-fpm
+      if [[ -f /etc/php70/conf.d/xdebug.ini.deactivated ]] then
+        sudo mv /etc/php70/conf.d/xdebug.ini.deactivated /etc/php70/conf.d/xdebug.ini
+        sudo systemctl restart php70-fpm
+      fi
+      if [[ -f /etc/php71/conf.d/xdebug.ini.deactivated ]] then
+        sudo mv /etc/php71/conf.d/xdebug.ini.deactivated /etc/php71/conf.d/xdebug.ini
+        sudo systemctl restart php71-fpm
+      fi
+      if [[ -f /etc/php/conf.d/xdebug.ini.deactivated ]] then
+        sudo mv /etc/php/conf.d/xdebug.ini.deactivated /etc/php/conf.d/xdebug.ini
+        sudo systemctl restart php-fpm
+      fi
       export XDEBUG_CONFIG="idekey=PHPSTORM"
     ;;
     off)
-      [ -f /etc/php70/conf.d/xdebug.ini ] && sudo mv /etc/php70/conf.d/xdebug.ini /etc/php70/conf.d/xdebug.ini.deactivated
-      sudo systemctl restart php70-fpm
-      [ -f /etc/php/conf.d/xdebug.ini ] && sudo mv /etc/php/conf.d/xdebug.ini /etc/php/conf.d/xdebug.ini.deactivated
-      sudo systemctl restart php-fpm
+      if [[ -f /etc/php70/conf.d/xdebug.ini ]] then
+        sudo mv /etc/php70/conf.d/xdebug.ini /etc/php70/conf.d/xdebug.ini.deactivated
+        sudo systemctl restart php70-fpm
+      fi
+      if [[ -f /etc/php71/conf.d/xdebug.ini ]] then
+        sudo mv /etc/php71/conf.d/xdebug.ini /etc/php71/conf.d/xdebug.ini.deactivated
+        sudo systemctl restart php71-fpm
+      fi
+      if [[ -f /etc/php/conf.d/xdebug.ini ]] then
+        sudo mv /etc/php/conf.d/xdebug.ini /etc/php/conf.d/xdebug.ini.deactivated
+        sudo systemctl restart php-fpm
+      fi
       unset XDEBUG_CONFIG
     ;;
     *)
@@ -180,17 +196,20 @@ function xdebug () {
     ;;
   esac
 }
-function p7 () {
+function phps () {
   case $1 in
-    on)
+    70)
       ln -sf /usr/bin/php70 "$HOME/bin/php" && rehash
+    ;;
+    71)
+      ln -sf /usr/bin/php71 "$HOME/bin/php" && rehash
     ;;
     off)
       [ -f "$HOME/bin/php" ] && unlink "$HOME/bin/php" && rehash
     ;;
     *)
-      echo "Alias php to php70"
-      echo "Usage: 07 on|off"
+      echo "Alias php70/php71 to php"
+      echo "Usage: phps 70|71"
     ;;
   esac
 }
