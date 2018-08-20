@@ -72,6 +72,14 @@ export PATH="/usr/local/heroku/bin:$PATH"
 export BROWSER="google-chrome-stable"
 ################################################################################
 # ALIAS
+if (( $+commands[exa] )); then
+  alias ls="exa --group-directories-first"
+  alias l="ls -l"
+  alias la="ll"
+fi
+if (( $+commands[bat] )); then
+  alias cat="bat --paging=never --style=plain"
+fi
 # Update packages
 alias updpkg="updpkgsums && /bin/rm .SRCINFO && makepkg --printsrcinfo > .SRCINFO"
 # PHP
