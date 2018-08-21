@@ -90,20 +90,23 @@ alias updpkg="updpkgsums && /bin/rm .SRCINFO && makepkg --printsrcinfo > .SRCINF
 alias st="subl"
 alias todo="st $HOME/my.todo"
 # Laravel
-alias lv="php artisan"
-alias a="php artisan"
+alias lv="php72 artisan"
+alias a="php72 artisan"
 alias en="envoy run"
 # Composer
 # if (( $+commands[hhvm] )); then
 #   alias composer="hhvm -v ResourceLimit.SocketDefaultTimeout=180 -v Http.SlowQueryThreshold=180000 $(which composer)"
 # fi
+alias php72="/usr/bin/php"
 alias c="php $(which composer)"
-alias c7="php70 $(which composer)"
+alias c70="php70 $(which composer)"
+alias c71="php71 $(which composer)"
+alias c72="php72 $(which composer)"
 # Vagrant
 alias v="vagrant"
 # Symfony
 alias sf="symfony"
-alias s="php bin/console"
+alias s="php72 bin/console"
 alias srs="s d:d:d --force && s d:d:cr && s d:s:c && s d:f:l --append && s h:f:l --append"
 # Git
 alias gfl="git flow"
