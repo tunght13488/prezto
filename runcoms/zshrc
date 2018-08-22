@@ -75,7 +75,7 @@ export BROWSER="google-chrome-stable"
 if (( $+commands[exa] )); then
   alias ls="exa --group-directories-first"
   alias l="ls -l"
-  alias la="ll"
+  alias la="l -a"
 fi
 if (( $+commands[bat] )); then
   alias cat="bat --paging=never --style=plain"
