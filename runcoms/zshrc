@@ -70,6 +70,20 @@ export ALSA_CARD=HDMI
 export PATH="/usr/local/heroku/bin:$PATH"
 # export HISTCONTROL=ignoreboth
 export BROWSER="google-chrome-stable"
+# fzf
+if (( $+commands[rg] )); then
+  if (( $+commands[git] )) then
+    export FZF_DEFAULT_COMMAND='git ls-tree -r --name-only HEAD || rg --files'
+  else
+    export FZF_DEFAULT_COMMAND='rg --files'
+  fi
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+fi
+export FZF_TMUX=1
+export FZF_DEFAULT_OPTS=""
+if (( $+commands[bat] )); then
+  export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --preview 'bat --line-range :100 --color \"always\" {}'"
+fi
 ################################################################################
 # ALIAS
 if (( $+commands[exa] )); then
@@ -79,6 +93,12 @@ if (( $+commands[exa] )); then
 fi
 if (( $+commands[bat] )); then
   alias cat="bat --paging=never --style=plain"
+fi
+if (( $+commands[prettyping] )); then
+  alias ping="prettyping --nolegend"
+fi
+if (( $+commands[ncdu] )); then
+  alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 fi
 # Update packages
 alias updpkg="updpkgsums && /bin/rm .SRCINFO && makepkg --printsrcinfo > .SRCINFO"
