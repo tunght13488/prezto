@@ -167,19 +167,25 @@ if [[ "$OSTYPE" == darwin* ]]; then
 fi
 # Magento 2
 alias magento="php70 bin/magento"
-alias mage="php70 $(which magento)"
+alias mage="php70 bin/magento"
 alias m="mr2"
-alias pestle="php70 $(which pestle.phar)"
+if (( $+commands[pestle.phar] )); then
+  alias pestle="php70 $(which pestle.phar)"
+fi
 alias mp="pestle"
 alias mrf="redis-cli flushall"
 alias mc="mg2-codegen"
-alias mcc="/usr/bin/rm -rf var/di var/generation/* generated/* var/session/* var/cache/* var/page_cache/* && m c:f"
+alias mcc="/usr/bin/rm -rf var/di var/generation/* generated/code/* var/cache/* var/page_cache/* var/session/* && m c:f"
 alias mcf="/usr/bin/rm -rf pub/static/* var/view_preprocessed/* && m c:f"
-alias mccf="/usr/bin/rm -rf var/di var/generation/* generated/* var/session/* var/cache/* var/page_cache/* pub/static/* var/view_preprocessed/* && m c:f"
+alias mccf="/usr/bin/rm -rf var/di var/generation/* generated/code/* var/cache/* var/page_cache/* var/session/* pub/static/* var/view_preprocessed/* && m c:f"
 alias mccfu="mccf && m setup:upgrade"
 alias mcu="mcc && m setup:upgrade"
-alias mr="php70 $(which n98-magerun.phar)"
-alias mr2="php70 $(which n98-magerun2.phar)"
+if (( $+commands[n98-magerun.phar] )); then
+  alias mr="php70 $(which n98-magerun.phar)"
+fi
+if (( $+commands[n98-magerun2.phar] )); then
+  alias mr2="php70 $(which n98-magerun2.phar)"
+fi
 alias q="q -O -H"
 alias qp="q -d '|'"
 function mr_base () {
@@ -193,32 +199,44 @@ function mr_base_same () {
 function xdebug () {
   case $1 in
     on)
-      if [[ -f /etc/php70/conf.d/xdebug.ini.deactivated ]] then
-        sudo mv /etc/php70/conf.d/xdebug.ini.deactivated /etc/php70/conf.d/xdebug.ini
-        sudo systemctl restart php70-fpm
+      if (( $+commands[php70] )); then
+        if [[ -f /etc/php70/conf.d/xdebug.ini.deactivated ]] then
+          sudo mv /etc/php70/conf.d/xdebug.ini.deactivated /etc/php70/conf.d/xdebug.ini
+          sudo systemctl restart php70-fpm
+        fi
       fi
-      if [[ -f /etc/php71/conf.d/xdebug.ini.deactivated ]] then
-        sudo mv /etc/php71/conf.d/xdebug.ini.deactivated /etc/php71/conf.d/xdebug.ini
-        sudo systemctl restart php71-fpm
+      if (( $+commands[php71] )); then
+        if [[ -f /etc/php71/conf.d/xdebug.ini.deactivated ]] then
+          sudo mv /etc/php71/conf.d/xdebug.ini.deactivated /etc/php71/conf.d/xdebug.ini
+          sudo systemctl restart php71-fpm
+        fi
       fi
-      if [[ -f /etc/php/conf.d/xdebug.ini.deactivated ]] then
-        sudo mv /etc/php/conf.d/xdebug.ini.deactivated /etc/php/conf.d/xdebug.ini
-        sudo systemctl restart php-fpm
+      if (( $+commands[php] )); then
+        if [[ -f /etc/php/conf.d/xdebug.ini.deactivated ]] then
+          sudo mv /etc/php/conf.d/xdebug.ini.deactivated /etc/php/conf.d/xdebug.ini
+          sudo systemctl restart php-fpm
+        fi
       fi
       export XDEBUG_CONFIG="idekey=PHPSTORM"
     ;;
     off)
-      if [[ -f /etc/php70/conf.d/xdebug.ini ]] then
-        sudo mv /etc/php70/conf.d/xdebug.ini /etc/php70/conf.d/xdebug.ini.deactivated
-        sudo systemctl restart php70-fpm
+      if (( $+commands[php70] )); then
+        if [[ -f /etc/php70/conf.d/xdebug.ini ]] then
+          sudo mv /etc/php70/conf.d/xdebug.ini /etc/php70/conf.d/xdebug.ini.deactivated
+          sudo systemctl restart php70-fpm
+        fi
       fi
-      if [[ -f /etc/php71/conf.d/xdebug.ini ]] then
-        sudo mv /etc/php71/conf.d/xdebug.ini /etc/php71/conf.d/xdebug.ini.deactivated
-        sudo systemctl restart php71-fpm
+      if (( $+commands[php71] )); then
+        if [[ -f /etc/php71/conf.d/xdebug.ini ]] then
+          sudo mv /etc/php71/conf.d/xdebug.ini /etc/php71/conf.d/xdebug.ini.deactivated
+          sudo systemctl restart php71-fpm
+        fi
       fi
-      if [[ -f /etc/php/conf.d/xdebug.ini ]] then
-        sudo mv /etc/php/conf.d/xdebug.ini /etc/php/conf.d/xdebug.ini.deactivated
-        sudo systemctl restart php-fpm
+      if (( $+commands[php] )); then
+        if [[ -f /etc/php/conf.d/xdebug.ini ]] then
+          sudo mv /etc/php/conf.d/xdebug.ini /etc/php/conf.d/xdebug.ini.deactivated
+          sudo systemctl restart php-fpm
+        fi
       fi
       unset XDEBUG_CONFIG
     ;;
