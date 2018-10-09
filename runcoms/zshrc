@@ -188,6 +188,7 @@ if (( $+commands[n98-magerun2.phar] )); then
 fi
 alias q="q -O -H"
 alias qp="q -d '|'"
+alias fp="find . -type d -exec chmod u+rwx,g+rwx,o+rx {} \; && find . -type f -exec chmod u+rw,g+rw,o+r {} \;"
 function mr_base () {
   mr config:set web/unsecure/base_url "http://$1/";
   mr config:set web/secure/base_url "https://$1/";
