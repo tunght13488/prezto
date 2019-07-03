@@ -66,8 +66,8 @@ export ALSA_CARD=HDMI
 # export PATH="/opt/hub:$PATH"
 # Gem
 # export PATH="/home/rocco/.gem/ruby/2.2.0/bin:$PATH"
-# Heroku
-export PATH="/usr/local/heroku/bin:$PATH"
+# # Heroku
+# export PATH="/usr/local/heroku/bin:$PATH"
 # export HISTCONTROL=ignoreboth
 export BROWSER="google-chrome-stable"
 # fzf
@@ -113,11 +113,12 @@ alias todo="st $HOME/my.todo"
 alias lv="php72 artisan"
 alias a="php72 artisan"
 alias en="envoy run"
+# robo.li
+alias robo="robo.phar"
 # Composer
 # if (( $+commands[hhvm] )); then
 #   alias composer="hhvm -v ResourceLimit.SocketDefaultTimeout=180 -v Http.SlowQueryThreshold=180000 $(which composer)"
 # fi
-alias php72="/usr/bin/php"
 alias c="php $(which composer)"
 alias c70="php70 $(which composer)"
 alias c71="php71 $(which composer)"
@@ -166,11 +167,11 @@ if [[ "$OSTYPE" == darwin* ]]; then
   alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
 fi
 # Magento 2
-alias magento="php70 bin/magento"
-alias mage="php70 bin/magento"
+alias magento="php bin/magento"
+alias mage="php bin/magento"
 alias m="mr2"
 if (( $+commands[pestle.phar] )); then
-  alias pestle="php70 $(which pestle.phar)"
+  alias pestle="php $(which pestle.phar)"
 fi
 alias mp="pestle"
 alias mrf="redis-cli flushall"
@@ -179,12 +180,12 @@ alias mcc="/usr/bin/rm -rf var/di var/generation/* generated/code/* var/cache/* 
 alias mcf="/usr/bin/rm -rf pub/static/* var/view_preprocessed/* && m c:f"
 alias mccf="/usr/bin/rm -rf var/di var/generation/* generated/code/* var/cache/* var/page_cache/* var/session/* pub/static/* var/view_preprocessed/* && m c:f"
 alias mccfu="mccf && m setup:upgrade"
-alias mcu="mcc && m setup:upgrade"
+alias mcu="mrf && mcc && m setup:upgrade"
 if (( $+commands[n98-magerun.phar] )); then
-  alias mr="php70 $(which n98-magerun.phar)"
+  alias mr="php $(which n98-magerun.phar)"
 fi
 if (( $+commands[n98-magerun2.phar] )); then
-  alias mr2="php70 $(which n98-magerun2.phar)"
+  alias mr2="php $(which n98-magerun2.phar)"
 fi
 alias q="q -O -H"
 alias qp="q -d '|'"
@@ -212,6 +213,12 @@ function xdebug () {
           sudo systemctl restart php71-fpm
         fi
       fi
+      if (( $+commands[php72] )); then
+        if [[ -f /etc/php72/conf.d/xdebug.ini.deactivated ]] then
+          sudo mv /etc/php72/conf.d/xdebug.ini.deactivated /etc/php72/conf.d/xdebug.ini
+          sudo systemctl restart php72-fpm
+        fi
+      fi
       if (( $+commands[php] )); then
         if [[ -f /etc/php/conf.d/xdebug.ini.deactivated ]] then
           sudo mv /etc/php/conf.d/xdebug.ini.deactivated /etc/php/conf.d/xdebug.ini
@@ -231,6 +238,12 @@ function xdebug () {
         if [[ -f /etc/php71/conf.d/xdebug.ini ]] then
           sudo mv /etc/php71/conf.d/xdebug.ini /etc/php71/conf.d/xdebug.ini.deactivated
           sudo systemctl restart php71-fpm
+        fi
+      fi
+      if (( $+commands[php72] )); then
+        if [[ -f /etc/php72/conf.d/xdebug.ini ]] then
+          sudo mv /etc/php72/conf.d/xdebug.ini /etc/php72/conf.d/xdebug.ini.deactivated
+          sudo systemctl restart php72-fpm
         fi
       fi
       if (( $+commands[php] )); then
@@ -253,6 +266,9 @@ function phps () {
     ;;
     71)
       ln -sf /usr/bin/php71 "$HOME/bin/php" && rehash
+    ;;
+    72)
+      ln -sf /usr/bin/php72 "$HOME/bin/php" && rehash
     ;;
     off)
       [ -f "$HOME/bin/php" ] && unlink "$HOME/bin/php" && rehash
@@ -303,24 +319,24 @@ function y {
 # [[ -s $HOME/perl5/perlbrew/etc/bashrc ]] && . $HOME/perl5/perlbrew/etc/bashrc
 # Wordpress
 [[ -s $HOME/wp-completion.bash ]] && . $HOME/wp-completion.bash
-# NVM
-export NVM_DIR="${HOME}/.nvm"
-[ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-export PATH="$(yarn global bin):$PATH"
+# # NVM
+# export NVM_DIR="${HOME}/.nvm"
+# [ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+# export PATH="$(yarn global bin):$PATH"
 
-# PyEnv
-# export PATH="${HOME}/.local/bin:$PATH"
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-export PYTHON_CONFIGURE_OPTS="--enable-shared"
-if (( $+commands[pyenv] )); then
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
-fi
+# # PyEnv
+# # export PATH="${HOME}/.local/bin:$PATH"
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
+# export PYTHON_CONFIGURE_OPTS="--enable-shared"
+# if (( $+commands[pyenv] )); then
+#   eval "$(pyenv init -)"
+#   eval "$(pyenv virtualenv-init -)"
+# fi
 
-# phpbrew
-export PHPBREW_RC_DISABLE=1
-[[ -s $HOME/.phpbrew/bashrc ]] && export PHPBREW_RC_DISABLE=1 && . $HOME/.phpbrew/bashrc
+# # phpbrew
+# export PHPBREW_RC_DISABLE=1
+# [[ -s $HOME/.phpbrew/bashrc ]] && export PHPBREW_RC_DISABLE=1 && . $HOME/.phpbrew/bashrc
 # export PHPBREW_SET_PROMPT=1
 
 ###-begin-pm2-completion-###
@@ -387,10 +403,12 @@ test -e "$HOME/k/k.sh" && source "$HOME/k/k.sh"
 alias ka="k -Ah --no-vcs"
 
 test -e "$PROJECT_PATH/github/fcambus/ansiweather/ansiweather.plugin.zsh" && source "$PROJECT_PATH/github/fcambus/ansiweather/ansiweather.plugin.zsh"
+test -e "/opt/asdf-vm/asdf.sh" && source "/opt/asdf-vm/asdf.sh"
+test -e "/opt/asdf-vm/completions/asdf.bash" && source "/opt/asdf-vm/completions/asdf.bash"
 
-# zsh-nvm
-[[ -s "${HOME}/.zsh-nvm/zsh-nvm.plugin.zsh" ]] && . "${HOME}/.zsh-nvm/zsh-nvm.plugin.zsh"
-[[ -s "${HOME}/.zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh" ]] && . "${HOME}/.zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh"
+# # zsh-nvm
+# [[ -s "${HOME}/.zsh-nvm/zsh-nvm.plugin.zsh" ]] && . "${HOME}/.zsh-nvm/zsh-nvm.plugin.zsh"
+# [[ -s "${HOME}/.zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh" ]] && . "${HOME}/.zsh-better-npm-completion/zsh-better-npm-completion.plugin.zsh"
 # luarocks
 if (( $+commands[luarocks] )); then
   # eval $(luarocks path --bin)
@@ -404,3 +422,9 @@ fi
 # --follow: Follow symlinks
 # --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+# deployer
+# [[ -s $HOME/.deployer_completion ]] && source $HOME/.deployer_completion
+# Tilix
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+    source /etc/profile.d/vte.sh
+fi
