@@ -13,7 +13,7 @@ fi
 [[ -s "${ZDOTDIR:-$HOME}/.zprezto/.ztoken" ]] && . "${ZDOTDIR:-$HOME}/.zprezto/.ztoken"
 # VARIABLES
 export PROJECT_PATH=$HOME/Projects
-export PATH=$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
+export PATH=$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$PATH
 export PATH="/usr/lib/ccache/bin/:$PATH"
 export CGR_BIN_DIR=$HOME/.config/composer/vendor/bin
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
@@ -86,11 +86,11 @@ if (( $+commands[bat] )); then
 fi
 ################################################################################
 # ALIAS
-if (( $+commands[exa] )); then
-  alias ls="exa --group-directories-first"
-  alias l="ls -l"
-  alias la="l -a"
-fi
+# if (( $+commands[exa] )); then
+#   alias ls="exa --group-directories-first"
+#   alias l="ls -l"
+#   alias la="l -a"
+# fi
 if (( $+commands[bat] )); then
   alias cat="bat --paging=never --style=plain"
 fi
@@ -169,24 +169,54 @@ fi
 # Magento 2
 alias magento="php bin/magento"
 alias mage="php bin/magento"
-alias m="mr2"
 if (( $+commands[pestle.phar] )); then
   alias pestle="php $(which pestle.phar)"
+  alias mp="pestle"
 fi
-alias mp="pestle"
 alias mrf="redis-cli flushall"
 alias mc="mg2-codegen"
-alias mcc="/usr/bin/rm -rf var/di var/generation/* generated/code/* var/cache/* var/page_cache/* var/session/* && m c:f"
-alias mcf="/usr/bin/rm -rf pub/static/* var/view_preprocessed/* && m c:f"
-alias mccf="/usr/bin/rm -rf var/di var/generation/* generated/code/* var/cache/* var/page_cache/* var/session/* pub/static/* var/view_preprocessed/* && m c:f"
-alias mccfu="mccf && m setup:upgrade"
-alias mcu="mrf && mcc && m setup:upgrade"
 if (( $+commands[n98-magerun.phar] )); then
   alias mr="php $(which n98-magerun.phar)"
 fi
 if (( $+commands[n98-magerun2.phar] )); then
   alias mr2="php $(which n98-magerun2.phar)"
 fi
+alias m="mr2"
+function deleteFolders () {
+  for folder in $1; do
+    if [ -d "$(pwd)/$folder" ]; then
+      /usr/bin/rm -rf "$(pwd)/$folder/"
+    fi
+  done
+}
+function deleteInsideFolders () {
+  for folder in $1; do
+    if [[ -n "$(pwd)/$folder/"*(#qN) ]]; then
+      /usr/bin/rm -rf "$(pwd)/$folder/"*
+    fi
+  done
+}
+function mcc () {
+  local folders=(var/di)
+  local folderGlobs=(var/generation generated/code generated/metadata var/cache var/page_cache var/session)
+  deleteFolders folders
+  deleteInsideFolders folderGlobs
+  m c:f
+}
+function mcf () {
+  local folderGlobs=(pub/static var/view_preprocessed)
+  deleteInsideFolders folderGlobs
+  m c:f
+}
+function mccf () {
+  local folders=(var/di)
+  local folderGlobs=(var/generation generated/code generated/metadata var/cache var/page_cache var/session pub/static var/view_preprocessed)
+  deleteFolders folders
+  deleteInsideFolders folderGlobs
+  m c:f
+}
+alias mccfu="mccf && m setup:upgrade"
+alias mcu="mrf && mcc && m setup:upgrade"
 alias q="q -O -H"
 alias qp="q -d '|'"
 alias fp="find . -type d -exec chmod u+rwx,g+rwx,o+rx {} \; && find . -type f -exec chmod u+rw,g+rw,o+r {} \;"
@@ -404,6 +434,7 @@ alias ka="k -Ah --no-vcs"
 
 test -e "$PROJECT_PATH/github/fcambus/ansiweather/ansiweather.plugin.zsh" && source "$PROJECT_PATH/github/fcambus/ansiweather/ansiweather.plugin.zsh"
 test -e "/opt/asdf-vm/asdf.sh" && source "/opt/asdf-vm/asdf.sh"
+test -e "/opt/asdf-vm/asdf.sh" && asdf reshim python
 test -e "/opt/asdf-vm/completions/asdf.bash" && source "/opt/asdf-vm/completions/asdf.bash"
 
 # # zsh-nvm
