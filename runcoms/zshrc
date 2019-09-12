@@ -89,7 +89,6 @@ export FZF_DEFAULT_OPTS=""
 if (( $+commands[bat] )); then
   export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --preview 'bat --line-range :100 --color \"always\" {}'"
 fi
-export HOMEBREW_GITHUB_API_TOKEN=16a2c7192eab5b86bdc8fb71e3c174b6fb4e40ba
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 ################################################################################
