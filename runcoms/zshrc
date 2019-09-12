@@ -12,9 +12,14 @@ fi
 ################################################################################
 [[ -s "${ZDOTDIR:-$HOME}/.zprezto/.ztoken" ]] && . "${ZDOTDIR:-$HOME}/.zprezto/.ztoken"
 # VARIABLES
+export LC_ALL=en_US.UTF-8
 export PROJECT_PATH=$HOME/Projects
 export PATH=$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$PATH
 export PATH="/usr/lib/ccache/bin/:$PATH"
+# export PATH="/usr/local/opt/php@7.2/sbin:/usr/local/opt/php@7.2/bin:/usr/local/opt/mariadb@10.2/bin:$PATH"
+export PY_USER_BIN=$(python -c 'import site; print(site.USER_BASE + "/bin")')
+export PY3_USER_BIN=$(python3 -c 'import site; print(site.USER_BASE + "/bin")')
+export PATH="$PY3_USER_BIN:$PY_USER_BIN:$PATH"
 export CGR_BIN_DIR=$HOME/.config/composer/vendor/bin
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
 export EDITOR="vim"
@@ -84,6 +89,9 @@ export FZF_DEFAULT_OPTS=""
 if (( $+commands[bat] )); then
   export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --preview 'bat --line-range :100 --color \"always\" {}'"
 fi
+export HOMEBREW_GITHUB_API_TOKEN=16a2c7192eab5b86bdc8fb71e3c174b6fb4e40ba
+export CLICOLOR=1
+export LSCOLORS=ExFxBxDxCxegedabagacad
 ################################################################################
 # ALIAS
 # if (( $+commands[exa] )); then
@@ -110,8 +118,8 @@ alias updpkg="updpkgsums && /bin/rm .SRCINFO && makepkg --printsrcinfo > .SRCINF
 alias st="subl"
 alias todo="st $HOME/my.todo"
 # Laravel
-alias lv="php72 artisan"
-alias a="php72 artisan"
+alias lv="php artisan"
+alias a="php artisan"
 alias en="envoy run"
 # robo.li
 alias robo="robo.phar"
@@ -127,7 +135,7 @@ alias c72="php72 $(which composer)"
 alias v="vagrant"
 # Symfony
 alias sf="symfony"
-alias s="php72 bin/console"
+alias s="php bin/console"
 alias srs="s d:d:d --force && s d:d:cr && s d:s:c && s d:f:l --append && s h:f:l --append"
 # Git
 alias gfl="git flow"
@@ -167,6 +175,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
   alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
 fi
 # Magento 2
+alias mc="magento-cloud"
 alias magento="php bin/magento"
 alias mage="php bin/magento"
 if (( $+commands[pestle.phar] )); then
@@ -174,7 +183,7 @@ if (( $+commands[pestle.phar] )); then
   alias mp="pestle"
 fi
 alias mrf="redis-cli flushall"
-alias mc="mg2-codegen"
+alias mcg="php $(which mg2-codegen.phar)"
 if (( $+commands[n98-magerun.phar] )); then
   alias mr="php $(which n98-magerun.phar)"
 fi
@@ -231,56 +240,64 @@ function mr_base_same () {
 function xdebug () {
   case $1 in
     on)
-      if (( $+commands[php70] )); then
-        if [[ -f /etc/php70/conf.d/xdebug.ini.deactivated ]] then
-          sudo mv /etc/php70/conf.d/xdebug.ini.deactivated /etc/php70/conf.d/xdebug.ini
-          sudo systemctl restart php70-fpm
-        fi
-      fi
-      if (( $+commands[php71] )); then
-        if [[ -f /etc/php71/conf.d/xdebug.ini.deactivated ]] then
-          sudo mv /etc/php71/conf.d/xdebug.ini.deactivated /etc/php71/conf.d/xdebug.ini
-          sudo systemctl restart php71-fpm
-        fi
-      fi
-      if (( $+commands[php72] )); then
-        if [[ -f /etc/php72/conf.d/xdebug.ini.deactivated ]] then
-          sudo mv /etc/php72/conf.d/xdebug.ini.deactivated /etc/php72/conf.d/xdebug.ini
-          sudo systemctl restart php72-fpm
-        fi
-      fi
-      if (( $+commands[php] )); then
-        if [[ -f /etc/php/conf.d/xdebug.ini.deactivated ]] then
-          sudo mv /etc/php/conf.d/xdebug.ini.deactivated /etc/php/conf.d/xdebug.ini
-          sudo systemctl restart php-fpm
-        fi
+      # if (( $+commands[php70] )); then
+      #   if [[ -f /etc/php70/conf.d/xdebug.ini.deactivated ]] then
+      #     sudo mv /etc/php70/conf.d/xdebug.ini.deactivated /etc/php70/conf.d/xdebug.ini
+      #     sudo systemctl restart php70-fpm
+      #   fi
+      # fi
+      # if (( $+commands[php71] )); then
+      #   if [[ -f /etc/php71/conf.d/xdebug.ini.deactivated ]] then
+      #     sudo mv /etc/php71/conf.d/xdebug.ini.deactivated /etc/php71/conf.d/xdebug.ini
+      #     sudo systemctl restart php71-fpm
+      #   fi
+      # fi
+      # if (( $+commands[php72] )); then
+      #   if [[ -f /etc/php72/conf.d/xdebug.ini.deactivated ]] then
+      #     sudo mv /etc/php72/conf.d/xdebug.ini.deactivated /etc/php72/conf.d/xdebug.ini
+      #     sudo systemctl restart php72-fpm
+      #   fi
+      # fi
+      # if (( $+commands[php] )); then
+      #   if [[ -f /etc/php/conf.d/xdebug.ini.deactivated ]] then
+      #     sudo mv /etc/php/conf.d/xdebug.ini.deactivated /etc/php/conf.d/xdebug.ini
+      #     sudo systemctl restart php-fpm
+      #   fi
+      # fi
+      if [[ -f /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini.deactivated ]] then
+        mv /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini.deactivated /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini
+        brew services restart php@7.2
       fi
       export XDEBUG_CONFIG="idekey=PHPSTORM"
     ;;
     off)
-      if (( $+commands[php70] )); then
-        if [[ -f /etc/php70/conf.d/xdebug.ini ]] then
-          sudo mv /etc/php70/conf.d/xdebug.ini /etc/php70/conf.d/xdebug.ini.deactivated
-          sudo systemctl restart php70-fpm
-        fi
-      fi
-      if (( $+commands[php71] )); then
-        if [[ -f /etc/php71/conf.d/xdebug.ini ]] then
-          sudo mv /etc/php71/conf.d/xdebug.ini /etc/php71/conf.d/xdebug.ini.deactivated
-          sudo systemctl restart php71-fpm
-        fi
-      fi
-      if (( $+commands[php72] )); then
-        if [[ -f /etc/php72/conf.d/xdebug.ini ]] then
-          sudo mv /etc/php72/conf.d/xdebug.ini /etc/php72/conf.d/xdebug.ini.deactivated
-          sudo systemctl restart php72-fpm
-        fi
-      fi
-      if (( $+commands[php] )); then
-        if [[ -f /etc/php/conf.d/xdebug.ini ]] then
-          sudo mv /etc/php/conf.d/xdebug.ini /etc/php/conf.d/xdebug.ini.deactivated
-          sudo systemctl restart php-fpm
-        fi
+      # if (( $+commands[php70] )); then
+      #   if [[ -f /etc/php70/conf.d/xdebug.ini ]] then
+      #     sudo mv /etc/php70/conf.d/xdebug.ini /etc/php70/conf.d/xdebug.ini.deactivated
+      #     sudo systemctl restart php70-fpm
+      #   fi
+      # fi
+      # if (( $+commands[php71] )); then
+      #   if [[ -f /etc/php71/conf.d/xdebug.ini ]] then
+      #     sudo mv /etc/php71/conf.d/xdebug.ini /etc/php71/conf.d/xdebug.ini.deactivated
+      #     sudo systemctl restart php71-fpm
+      #   fi
+      # fi
+      # if (( $+commands[php72] )); then
+      #   if [[ -f /etc/php72/conf.d/xdebug.ini ]] then
+      #     sudo mv /etc/php72/conf.d/xdebug.ini /etc/php72/conf.d/xdebug.ini.deactivated
+      #     sudo systemctl restart php72-fpm
+      #   fi
+      # fi
+      # if (( $+commands[php] )); then
+      #   if [[ -f /etc/php/conf.d/xdebug.ini ]] then
+      #     sudo mv /etc/php/conf.d/xdebug.ini /etc/php/conf.d/xdebug.ini.deactivated
+      #     sudo systemctl restart php-fpm
+      #   fi
+      # fi
+      if [[ -f /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini ]] then
+        mv /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini.deactivated
+        brew services restart php@7.2
       fi
       unset XDEBUG_CONFIG
     ;;
@@ -334,15 +351,16 @@ function y {
   fi
   return 0
 }
+alias ports="sudo lsof -iTCP -s TCP:LISTEN -P -n"
 ################################################################################
 # LIBRARY
 # MeRC
 [[ -s $HOME/.merc ]] && . $HOME/.merc
 # rvm
-# if [[ -s $HOME/.rvm/scripts/rvm ]]; then
-  # . $HOME/.rvm/scripts/rvm
-  # export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-# fi
+if [[ -s $HOME/.rvm/scripts/rvm ]]; then
+  . $HOME/.rvm/scripts/rvm
+  export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+fi
 # Mark
 # [[ -s $HOME/.mark.sh ]] && . $HOME/.mark.sh
 # Perlbrew
@@ -352,6 +370,9 @@ function y {
 # # NVM
 # export NVM_DIR="${HOME}/.nvm"
 # [ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
 # export PATH="$(yarn global bin):$PATH"
 
 # # PyEnv
@@ -432,10 +453,13 @@ transfer() {
 test -e "$HOME/k/k.sh" && source "$HOME/k/k.sh"
 alias ka="k -Ah --no-vcs"
 
+test -e "$(brew --prefix asdf)/asdf.sh" && source "$(brew --prefix asdf)/asdf.sh"
+test -e "$(brew --prefix asdf)/asdf.sh" && asdf reshim python
+test -e "$(brew --prefix asdf)/completions/asdf.bash" && source "$(brew --prefix asdf)/completions/asdf.bash"
 test -e "$PROJECT_PATH/github/fcambus/ansiweather/ansiweather.plugin.zsh" && source "$PROJECT_PATH/github/fcambus/ansiweather/ansiweather.plugin.zsh"
-test -e "/opt/asdf-vm/asdf.sh" && source "/opt/asdf-vm/asdf.sh"
-test -e "/opt/asdf-vm/asdf.sh" && asdf reshim python
-test -e "/opt/asdf-vm/completions/asdf.bash" && source "/opt/asdf-vm/completions/asdf.bash"
+# test -e "$(brew --prefix asdf)/asdf.sh" && source "$(brew --prefix asdf)/asdf.sh"
+# test -e "$(brew --prefix asdf)/asdf.sh" && asdf reshim python
+# test -e "$(brew --prefix asdf)/completions/asdf.bash" && source "$(brew --prefix asdf)/completions/asdf.bash"
 
 # # zsh-nvm
 # [[ -s "${HOME}/.zsh-nvm/zsh-nvm.plugin.zsh" ]] && . "${HOME}/.zsh-nvm/zsh-nvm.plugin.zsh"
@@ -459,3 +483,11 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
     source /etc/profile.d/vte.sh
 fi
+ulimit -S -n 20480
+# if which ruby >/dev/null && which gem >/dev/null; then
+#   PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+# fi
+# BEGIN SNIPPET: Magento Cloud CLI configuration
+export PATH="$HOME/"'.magento-cloud/bin':"$PATH"
+if [ -f "$HOME/"'.magento-cloud/shell-config.rc' ]; then . "$HOME/"'.magento-cloud/shell-config.rc'; fi
+# END SNIPPET
