@@ -91,6 +91,7 @@ if (( $+commands[bat] )); then
 fi
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
+export PATH="$HOME/.symfony/bin:$PATH"
 ################################################################################
 # ALIAS
 # if (( $+commands[exa] )); then
@@ -98,6 +99,10 @@ export LSCOLORS=ExFxBxDxCxegedabagacad
 #   alias l="ls -l"
 #   alias la="l -a"
 # fi
+if (( $+commands[brew] )); then
+  alias br="brew"
+  alias bs="brew services"
+fi
 if (( $+commands[bat] )); then
   alias cat="bat --paging=never --style=plain"
 fi
@@ -139,8 +144,8 @@ alias srs="s d:d:d --force && s d:d:cr && s d:s:c && s d:f:l --append && s h:f:l
 # Git
 alias gfl="git flow"
 if (( $+commands[hub] )); then
-  # eval "$(hub alias -s)"
-  [[ -s $HOME/Projects/govendor/src/github.com/github/hub/etc ]] && fpath=($HOME/Projects/govendor/src/github.com/github/hub/etc $fpath)
+  eval "$(hub alias -s)"
+  # [[ -s $HOME/Projects/govendor/src/github.com/github/hub/etc ]] && fpath=($HOME/Projects/govendor/src/github.com/github/hub/etc $fpath)
 fi
 # chmod
 alias mx='chmod a+x'
@@ -153,6 +158,9 @@ alias makepass='openssl rand -base64 32'
 # Program
 alias hosts='sudo $EDITOR /etc/hosts'
 alias sshconfig='$EDITOR ~/.ssh/config'
+function sshm() {
+  ssh $@ -t -- /bin/sh -c 'tmux has-session && exec tmux attach || exec tmux'
+}
 alias currentwifi="networksetup -getairportnetwork en1"
 alias week='date +%V'
 # IP
@@ -356,9 +364,11 @@ alias ports="sudo lsof -iTCP -s TCP:LISTEN -P -n"
 # MeRC
 [[ -s $HOME/.merc ]] && . $HOME/.merc
 # rvm
+export PATH="${HOME}/.gem/ruby/2.6.0/bin:${PATH}"
 if [[ -s $HOME/.rvm/scripts/rvm ]]; then
   . $HOME/.rvm/scripts/rvm
   export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+  export PATH="${HOME}/.rvm/bin:${PATH}" # Add RVM to PATH for scripting
 fi
 # Mark
 # [[ -s $HOME/.mark.sh ]] && . $HOME/.mark.sh
@@ -374,15 +384,15 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
 # export PATH="$(yarn global bin):$PATH"
 
-# # PyEnv
-# # export PATH="${HOME}/.local/bin:$PATH"
-# export PYENV_ROOT="$HOME/.pyenv"
-# export PATH="$PYENV_ROOT/bin:$PATH"
-# export PYTHON_CONFIGURE_OPTS="--enable-shared"
-# if (( $+commands[pyenv] )); then
-#   eval "$(pyenv init -)"
-#   eval "$(pyenv virtualenv-init -)"
-# fi
+# PyEnv
+# export PATH="${HOME}/.local/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+export PYTHON_CONFIGURE_OPTS="--enable-shared"
+if (( $+commands[pyenv] )); then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
 
 # # phpbrew
 # export PHPBREW_RC_DISABLE=1
@@ -490,3 +500,9 @@ ulimit -S -n 20480
 export PATH="$HOME/"'.magento-cloud/bin':"$PATH"
 if [ -f "$HOME/"'.magento-cloud/shell-config.rc' ]; then . "$HOME/"'.magento-cloud/shell-config.rc'; fi
 # END SNIPPET
+alias sm="synthmanager"
+
+# added by travis gem
+[ -f /Users/tunghathe/.travis/travis.sh ] && source /Users/tunghathe/.travis/travis.sh
+# tmuxinator
+[ -f /usr/local/share/zsh/site-functions/_tmuxinator ] && source /usr/local/share/zsh/site-functions/_tmuxinator
