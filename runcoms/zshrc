@@ -1,3 +1,5 @@
+# zmodload zsh/zprof
+
 #
 # Executes commands at the start of an interactive session.
 #
@@ -8,6 +10,7 @@
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
+
 # Customize to your needs...
 ################################################################################
 [[ -s "${ZDOTDIR:-$HOME}/.zprezto/.ztoken" ]] && . "${ZDOTDIR:-$HOME}/.zprezto/.ztoken"
@@ -363,13 +366,13 @@ alias ports="sudo lsof -iTCP -s TCP:LISTEN -P -n"
 # LIBRARY
 # MeRC
 [[ -s $HOME/.merc ]] && . $HOME/.merc
-# rvm
-export PATH="${HOME}/.gem/ruby/2.6.0/bin:${PATH}"
-if [[ -s $HOME/.rvm/scripts/rvm ]]; then
-  . $HOME/.rvm/scripts/rvm
-  export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-  export PATH="${HOME}/.rvm/bin:${PATH}" # Add RVM to PATH for scripting
-fi
+# # rvm
+# export PATH="${HOME}/.gem/ruby/2.6.0/bin:${PATH}"
+# if [[ -s $HOME/.rvm/scripts/rvm ]]; then
+#   . $HOME/.rvm/scripts/rvm
+#   export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+#   export PATH="${HOME}/.rvm/bin:${PATH}" # Add RVM to PATH for scripting
+# fi
 # Mark
 # [[ -s $HOME/.mark.sh ]] && . $HOME/.mark.sh
 # Perlbrew
@@ -379,9 +382,9 @@ fi
 # # NVM
 # export NVM_DIR="${HOME}/.nvm"
 # [ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+# [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
 # export PATH="$(yarn global bin):$PATH"
 
 # PyEnv
@@ -409,36 +412,36 @@ COMP_WORDBREAKS=${COMP_WORDBREAKS/=/}
 COMP_WORDBREAKS=${COMP_WORDBREAKS/@/}
 export COMP_WORDBREAKS
 
-if type complete &>/dev/null; then
-  _pm2_completion () {
-    local si="$IFS"
-    IFS=$'\n' COMPREPLY=($(COMP_CWORD="$COMP_CWORD" \
-                           COMP_LINE="$COMP_LINE" \
-                           COMP_POINT="$COMP_POINT" \
-                           pm2 completion -- "${COMP_WORDS[@]}" \
-                           2>/dev/null)) || return $?
-    IFS="$si"
-  }
-  complete -o default -F _pm2_completion pm2
-elif type compctl &>/dev/null; then
-  _pm2_completion () {
-    local cword line point words si
-    read -Ac words
-    read -cn cword
-    let cword-=1
-    read -l line
-    read -ln point
-    si="$IFS"
-    IFS=$'\n' reply=($(COMP_CWORD="$cword" \
-                       COMP_LINE="$line" \
-                       COMP_POINT="$point" \
-                       pm2 completion -- "${words[@]}" \
-                       2>/dev/null)) || return $?
-    IFS="$si"
-  }
-  compctl -K _pm2_completion + -f + pm2
-fi
-###-end-pm2-completion-###
+# if type complete &>/dev/null; then
+#   _pm2_completion () {
+#     local si="$IFS"
+#     IFS=$'\n' COMPREPLY=($(COMP_CWORD="$COMP_CWORD" \
+#                            COMP_LINE="$COMP_LINE" \
+#                            COMP_POINT="$COMP_POINT" \
+#                            pm2 completion -- "${COMP_WORDS[@]}" \
+#                            2>/dev/null)) || return $?
+#     IFS="$si"
+#   }
+#   complete -o default -F _pm2_completion pm2
+# elif type compctl &>/dev/null; then
+#   _pm2_completion () {
+#     local cword line point words si
+#     read -Ac words
+#     read -cn cword
+#     let cword-=1
+#     read -l line
+#     read -ln point
+#     si="$IFS"
+#     IFS=$'\n' reply=($(COMP_CWORD="$cword" \
+#                        COMP_LINE="$line" \
+#                        COMP_POINT="$point" \
+#                        pm2 completion -- "${words[@]}" \
+#                        2>/dev/null)) || return $?
+#     IFS="$si"
+#   }
+#   compctl -K _pm2_completion + -f + pm2
+# fi
+# ###-end-pm2-completion-###
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -506,3 +509,5 @@ alias sm="synthmanager"
 [ -f /Users/tunghathe/.travis/travis.sh ] && source /Users/tunghathe/.travis/travis.sh
 # tmuxinator
 [ -f /usr/local/share/zsh/site-functions/_tmuxinator ] && source /usr/local/share/zsh/site-functions/_tmuxinator
+
+# zprof
