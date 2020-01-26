@@ -102,9 +102,11 @@ export PATH="$HOME/.symfony/bin:$PATH"
 #   alias l="ls -l"
 #   alias la="l -a"
 # fi
-if (( $+commands[brew] )); then
-  alias br="brew"
-  alias bs="brew services"
+if [[ "$OSTYPE" == darwin* ]]; then
+  if (( $+commands[brew] )); then
+    alias br="brew"
+    alias bs="brew services"
+  fi
 fi
 if (( $+commands[bat] )); then
   alias cat="bat --paging=never --style=plain"
@@ -250,64 +252,72 @@ function mr_base_same () {
 function xdebug () {
   case $1 in
     on)
-      # if (( $+commands[php70] )); then
-      #   if [[ -f /etc/php70/conf.d/xdebug.ini.deactivated ]] then
-      #     sudo mv /etc/php70/conf.d/xdebug.ini.deactivated /etc/php70/conf.d/xdebug.ini
-      #     sudo systemctl restart php70-fpm
-      #   fi
-      # fi
-      # if (( $+commands[php71] )); then
-      #   if [[ -f /etc/php71/conf.d/xdebug.ini.deactivated ]] then
-      #     sudo mv /etc/php71/conf.d/xdebug.ini.deactivated /etc/php71/conf.d/xdebug.ini
-      #     sudo systemctl restart php71-fpm
-      #   fi
-      # fi
-      # if (( $+commands[php72] )); then
-      #   if [[ -f /etc/php72/conf.d/xdebug.ini.deactivated ]] then
-      #     sudo mv /etc/php72/conf.d/xdebug.ini.deactivated /etc/php72/conf.d/xdebug.ini
-      #     sudo systemctl restart php72-fpm
-      #   fi
-      # fi
-      # if (( $+commands[php] )); then
-      #   if [[ -f /etc/php/conf.d/xdebug.ini.deactivated ]] then
-      #     sudo mv /etc/php/conf.d/xdebug.ini.deactivated /etc/php/conf.d/xdebug.ini
-      #     sudo systemctl restart php-fpm
-      #   fi
-      # fi
-      if [[ -f /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini.deactivated ]] then
-        mv /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini.deactivated /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini
-        brew services restart php@7.2
+      if [[ "$OSTYPE" == linux* ]]; then
+        if (( $+commands[php70] )); then
+          if [[ -f /etc/php70/conf.d/xdebug.ini.deactivated ]] then
+            sudo mv /etc/php70/conf.d/xdebug.ini.deactivated /etc/php70/conf.d/xdebug.ini
+            sudo systemctl restart php70-fpm
+          fi
+        fi
+        if (( $+commands[php71] )); then
+          if [[ -f /etc/php71/conf.d/xdebug.ini.deactivated ]] then
+            sudo mv /etc/php71/conf.d/xdebug.ini.deactivated /etc/php71/conf.d/xdebug.ini
+            sudo systemctl restart php71-fpm
+          fi
+        fi
+        if (( $+commands[php72] )); then
+          if [[ -f /etc/php72/conf.d/xdebug.ini.deactivated ]] then
+            sudo mv /etc/php72/conf.d/xdebug.ini.deactivated /etc/php72/conf.d/xdebug.ini
+            sudo systemctl restart php72-fpm
+          fi
+        fi
+        if (( $+commands[php] )); then
+          if [[ -f /etc/php/conf.d/xdebug.ini.deactivated ]] then
+            sudo mv /etc/php/conf.d/xdebug.ini.deactivated /etc/php/conf.d/xdebug.ini
+            sudo systemctl restart php-fpm
+          fi
+        fi
+      fi
+      if [[ "$OSTYPE" == darwin* ]]; then
+        if [[ -f /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini.deactivated ]] then
+          mv /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini.deactivated /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini
+          brew services restart php@7.2
+        fi
       fi
       export XDEBUG_CONFIG="idekey=PHPSTORM"
     ;;
     off)
-      # if (( $+commands[php70] )); then
-      #   if [[ -f /etc/php70/conf.d/xdebug.ini ]] then
-      #     sudo mv /etc/php70/conf.d/xdebug.ini /etc/php70/conf.d/xdebug.ini.deactivated
-      #     sudo systemctl restart php70-fpm
-      #   fi
-      # fi
-      # if (( $+commands[php71] )); then
-      #   if [[ -f /etc/php71/conf.d/xdebug.ini ]] then
-      #     sudo mv /etc/php71/conf.d/xdebug.ini /etc/php71/conf.d/xdebug.ini.deactivated
-      #     sudo systemctl restart php71-fpm
-      #   fi
-      # fi
-      # if (( $+commands[php72] )); then
-      #   if [[ -f /etc/php72/conf.d/xdebug.ini ]] then
-      #     sudo mv /etc/php72/conf.d/xdebug.ini /etc/php72/conf.d/xdebug.ini.deactivated
-      #     sudo systemctl restart php72-fpm
-      #   fi
-      # fi
-      # if (( $+commands[php] )); then
-      #   if [[ -f /etc/php/conf.d/xdebug.ini ]] then
-      #     sudo mv /etc/php/conf.d/xdebug.ini /etc/php/conf.d/xdebug.ini.deactivated
-      #     sudo systemctl restart php-fpm
-      #   fi
-      # fi
-      if [[ -f /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini ]] then
-        mv /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini.deactivated
-        brew services restart php@7.2
+      if [[ "$OSTYPE" == linux* ]]; then
+        if (( $+commands[php70] )); then
+          if [[ -f /etc/php70/conf.d/xdebug.ini ]] then
+            sudo mv /etc/php70/conf.d/xdebug.ini /etc/php70/conf.d/xdebug.ini.deactivated
+            sudo systemctl restart php70-fpm
+          fi
+        fi
+        if (( $+commands[php71] )); then
+          if [[ -f /etc/php71/conf.d/xdebug.ini ]] then
+            sudo mv /etc/php71/conf.d/xdebug.ini /etc/php71/conf.d/xdebug.ini.deactivated
+            sudo systemctl restart php71-fpm
+          fi
+        fi
+        if (( $+commands[php72] )); then
+          if [[ -f /etc/php72/conf.d/xdebug.ini ]] then
+            sudo mv /etc/php72/conf.d/xdebug.ini /etc/php72/conf.d/xdebug.ini.deactivated
+            sudo systemctl restart php72-fpm
+          fi
+        fi
+        if (( $+commands[php] )); then
+          if [[ -f /etc/php/conf.d/xdebug.ini ]] then
+            sudo mv /etc/php/conf.d/xdebug.ini /etc/php/conf.d/xdebug.ini.deactivated
+            sudo systemctl restart php-fpm
+          fi
+        fi
+      fi
+      if [[ "$OSTYPE" == darwin* ]]; then
+        if [[ -f /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini ]] then
+          mv /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini.deactivated
+          brew services restart php@7.2
+        fi
       fi
       unset XDEBUG_CONFIG
     ;;
@@ -465,9 +475,11 @@ transfer() {
 test -e "$HOME/k/k.sh" && source "$HOME/k/k.sh"
 alias ka="k -Ah --no-vcs"
 
-test -e "$(brew --prefix asdf)/asdf.sh" && source "$(brew --prefix asdf)/asdf.sh"
-test -e "$(brew --prefix asdf)/asdf.sh" && asdf reshim python
-test -e "$(brew --prefix asdf)/completions/asdf.bash" && source "$(brew --prefix asdf)/completions/asdf.bash"
+if [[ "$OSTYPE" == darwin* ]]; then
+  test -e "$(brew --prefix asdf)/asdf.sh" && source "$(brew --prefix asdf)/asdf.sh"
+  test -e "$(brew --prefix asdf)/asdf.sh" && asdf reshim python
+  test -e "$(brew --prefix asdf)/completions/asdf.bash" && source "$(brew --prefix asdf)/completions/asdf.bash"
+fi
 test -e "$PROJECT_PATH/github/fcambus/ansiweather/ansiweather.plugin.zsh" && source "$PROJECT_PATH/github/fcambus/ansiweather/ansiweather.plugin.zsh"
 # test -e "$(brew --prefix asdf)/asdf.sh" && source "$(brew --prefix asdf)/asdf.sh"
 # test -e "$(brew --prefix asdf)/asdf.sh" && asdf reshim python

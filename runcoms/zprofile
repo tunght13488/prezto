@@ -65,3 +65,8 @@ export LESS='-g -i -M -R -S -w -z-4'
 if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
+
+# BEGIN SNIPPET: Magento Cloud CLI configuration
+HOME=${HOME:-'/home/tung'}
+export PATH="$HOME/"'.magento-cloud/bin':"$PATH"
+if [ -f "$HOME/"'.magento-cloud/shell-config.rc' ]; then . "$HOME/"'.magento-cloud/shell-config.rc'; fi # END SNIPPET
