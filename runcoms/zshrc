@@ -74,10 +74,12 @@ export ALSA_CARD=HDMI
 # export PATH="/opt/hub:$PATH"
 # Gem
 # export PATH="/home/rocco/.gem/ruby/2.2.0/bin:$PATH"
+export PATH="$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH"
 # # Heroku
 # export PATH="/usr/local/heroku/bin:$PATH"
 # export HISTCONTROL=ignoreboth
 export BROWSER="google-chrome-stable"
+export JAVA_HOME=/usr/lib/jvm/default
 # fzf
 if (( $+commands[rg] )); then
   if (( $+commands[git] )) then
@@ -95,13 +97,56 @@ fi
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export PATH="$HOME/.symfony/bin:$PATH"
+export SPACESHIP_PROMPT_ORDER=(
+    time          # Time stampts section
+    user          # Username section
+    dir           # Current directory section
+    host          # Hostname section
+    git           # Git section (git_branch + git_status)
+    #hg            # Mercurial section (hg_branch  + hg_status)
+    package       # Package version
+    node          # Node.js section
+    ruby          # Ruby section
+    #elm           # Elm section
+    elixir        # Elixir section
+    #xcode         # Xcode section
+    #swift         # Swift section
+    #golang        # Go section
+    php           # PHP section
+    #rust          # Rust section
+    #haskell       # Haskell Stack section
+    #julia         # Julia section
+    docker        # Docker section
+    #aws           # Amazon Web Services section
+    #venv          # virtualenv section
+    #conda         # conda virtualenv section
+    #pyenv         # Pyenv section
+    #dotnet        # .NET section
+    #ember         # Ember.js section
+    kubecontext   # Kubectl context section
+    terraform     # Terraform workspace section
+    exec_time     # Execution time
+    line_sep      # Line break
+    battery       # Battery level and status
+    vi_mode       # Vi-mode indicator
+    jobs          # Background jobs indicator
+    exit_code     # Exit code section
+    char          # Prompt character
+  )
+eval "$(starship init zsh)"
+# 1password-cli
+# eval $(op signin my)
+function 1p() {
+  eval $(op signin my)
+}
 ################################################################################
 # ALIAS
-# if (( $+commands[exa] )); then
-#   alias ls="exa --group-directories-first"
-#   alias l="ls -l"
-#   alias la="l -a"
-# fi
+alias tf="terraform"
+if (( $+commands[exa] )); then
+  alias ls="exa --group-directories-first"
+  alias l="ls -l"
+  alias la="l -a"
+fi
 if [[ "$OSTYPE" == darwin* ]]; then
   if (( $+commands[brew] )); then
     alias br="brew"
@@ -118,10 +163,10 @@ if (( $+commands[ncdu] )); then
   alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 fi
 # Update packages
-alias updpkg="updpkgsums && /bin/rm .SRCINFO && makepkg --printsrcinfo > .SRCINFO"
+alias updpkg="updpkgsums && makepkg --printsrcinfo | tee .SRCINFO"
 # PHP
-# if (( $+commands[php70] )); then
-#   alias php="php70"
+# if (( $+commands[php73] )); then
+#   alias php="php73"
 # fi
 # Sublime
 alias st="subl"
@@ -140,6 +185,10 @@ alias c="php $(which composer)"
 alias c70="php70 $(which composer)"
 alias c71="php71 $(which composer)"
 alias c72="php72 $(which composer)"
+alias c73="php73 $(which composer1)"
+alias c732="php73 $(which composer)"
+alias c74="php74 $(which composer)"
+alias c7="php7 $(which composer)"
 # Vagrant
 alias v="vagrant"
 # Symfony
@@ -187,20 +236,26 @@ if [[ "$OSTYPE" == darwin* ]]; then
   alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
 fi
 # Magento 2
+# if (( $+commands[php7] )); then
+#   alias mphp="php7"
+# else
+#   alias mphp="php"
+# fi
+alias mphp="php7"
 alias mc="magento-cloud"
-alias magento="php bin/magento"
-alias mage="php bin/magento"
+alias magento="mphp bin/magento"
+alias mage="mphp bin/magento"
 if (( $+commands[pestle.phar] )); then
-  alias pestle="php $(which pestle.phar)"
+  alias pestle="mphp $(which pestle.phar)"
   alias mp="pestle"
 fi
 alias mrf="redis-cli flushall"
-alias mcg="php $(which mg2-codegen.phar)"
+alias mcg="mphp $(which mg2-codegen.phar)"
 if (( $+commands[n98-magerun.phar] )); then
-  alias mr="php $(which n98-magerun.phar)"
+  alias mr="mphp $(which n98-magerun.phar)"
 fi
 if (( $+commands[n98-magerun2.phar] )); then
-  alias mr2="php $(which n98-magerun2.phar)"
+  alias mr2="mphp $(which n98-magerun2.phar)"
 fi
 alias m="mr2"
 function deleteFolders () {
@@ -241,6 +296,12 @@ alias mcu="mrf && mcc && m setup:upgrade"
 alias q="q -O -H"
 alias qp="q -d '|'"
 alias fp="find . -type d -exec chmod u+rwx,g+rwx,o+rx {} \; && find . -type f -exec chmod u+rw,g+rw,o+r {} \;"
+function config_edit_on() {
+  sudo chown -R tungha /etc/nginx /etc/php /etc/php73 /etc/php74 /etc/php7 /etc/varnish /etc/hosts
+}
+function config_edit_off() {
+  sudo chown -R root /etc/nginx /etc/php /etc/php73 /etc/php74 /etc/php7 /etc/varnish /etc/hosts
+}
 function mr_base () {
   mr config:set web/unsecure/base_url "http://$1/";
   mr config:set web/secure/base_url "https://$1/";
@@ -269,6 +330,24 @@ function xdebug () {
           if [[ -f /etc/php72/conf.d/xdebug.ini.deactivated ]] then
             sudo mv /etc/php72/conf.d/xdebug.ini.deactivated /etc/php72/conf.d/xdebug.ini
             sudo systemctl restart php72-fpm
+          fi
+        fi
+        if (( $+commands[php73] )); then
+          if [[ -f /etc/php73/conf.d/xdebug.ini.deactivated ]] then
+            sudo mv /etc/php73/conf.d/xdebug.ini.deactivated /etc/php73/conf.d/xdebug.ini
+            sudo systemctl restart php73-fpm
+          fi
+        fi
+        if (( $+commands[php74] )); then
+          if [[ -f /etc/php74/conf.d/xdebug.ini.deactivated ]] then
+            sudo mv /etc/php74/conf.d/xdebug.ini.deactivated /etc/php74/conf.d/xdebug.ini
+            sudo systemctl restart php74-fpm
+          fi
+        fi
+        if (( $+commands[php7] )); then
+          if [[ -f /etc/php7/conf.d/xdebug.ini.deactivated ]] then
+            sudo mv /etc/php7/conf.d/xdebug.ini.deactivated /etc/php7/conf.d/xdebug.ini
+            sudo systemctl restart php-fpm7
           fi
         fi
         if (( $+commands[php] )); then
@@ -304,6 +383,24 @@ function xdebug () {
           if [[ -f /etc/php72/conf.d/xdebug.ini ]] then
             sudo mv /etc/php72/conf.d/xdebug.ini /etc/php72/conf.d/xdebug.ini.deactivated
             sudo systemctl restart php72-fpm
+          fi
+        fi
+        if (( $+commands[php73] )); then
+          if [[ -f /etc/php73/conf.d/xdebug.ini ]] then
+            sudo mv /etc/php73/conf.d/xdebug.ini /etc/php73/conf.d/xdebug.ini.deactivated
+            sudo systemctl restart php73-fpm
+          fi
+        fi
+        if (( $+commands[php74] )); then
+          if [[ -f /etc/php74/conf.d/xdebug.ini ]] then
+            sudo mv /etc/php74/conf.d/xdebug.ini /etc/php74/conf.d/xdebug.ini.deactivated
+            sudo systemctl restart php74-fpm
+          fi
+        fi
+        if (( $+commands[php7] )); then
+          if [[ -f /etc/php7/conf.d/xdebug.ini ]] then
+            sudo mv /etc/php7/conf.d/xdebug.ini /etc/php7/conf.d/xdebug.ini.deactivated
+            sudo systemctl restart php-fpm7
           fi
         fi
         if (( $+commands[php] )); then
@@ -372,6 +469,7 @@ function y {
   return 0
 }
 alias ports="sudo lsof -iTCP -s TCP:LISTEN -P -n"
+alias k="kubectl"
 ################################################################################
 # LIBRARY
 # MeRC
@@ -395,7 +493,7 @@ alias ports="sudo lsof -iTCP -s TCP:LISTEN -P -n"
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 # [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
-# export PATH="$(yarn global bin):$PATH"
+export PATH="$(yarn global bin):$PATH"
 
 # PyEnv
 # export PATH="${HOME}/.local/bin:$PATH"
@@ -521,5 +619,41 @@ alias sm="synthmanager"
 [ -f /Users/tunghathe/.travis/travis.sh ] && source /Users/tunghathe/.travis/travis.sh
 # tmuxinator
 [ -f /usr/local/share/zsh/site-functions/_tmuxinator ] && source /usr/local/share/zsh/site-functions/_tmuxinator
+alias mux="tmuxinator"
 
 # zprof
+# source /usr/share/nvm/init-nvm.sh
+
+# if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+#   exec tmux
+# fi
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/terraform terraform
+
+# fnm
+# export PATH=/home/tungha/.fnm:$PATH
+# eval "`fnm env`"
+alias ggg="googler"
+alias hm="helm"
+alias kc="kubectl"
+alias hmh="hm --namespace headless"
+alias kch="kc -n headless"
+alias hmo="hm --namespace oms"
+alias kco="kc -n oms"
+alias hm24="hm --namespace magento24"
+alias kc24="kc -n magento24"
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
+function warm_urls() {
+  echo ' Connect  | Transfer |  Total   | Status  | URL'
+  echo '----------|----------|----------|---------|----'
+  cat "$1" | while read line; do
+    curl -so /dev/null -w " %{time_connect} | %{time_starttransfer} | %{time_total} |   %{http_code}   " $line
+    echo "| $line"
+  done
+}
+# tabtab source for packages
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true

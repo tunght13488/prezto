@@ -54,6 +54,7 @@ zstyle ':prezto:load' pmodule \
   'syntax-highlighting' \
   'history-substring-search' \
   'fzf' \
+  'contrib-prompt' \
   'prompt'
 
 #
@@ -126,7 +127,8 @@ zstyle ':prezto:module:history-substring-search' color 'yes'
 #
 
 # Set the Pacman frontend.
-zstyle ':prezto:module:pacman' frontend 'yay'
+# zstyle ':prezto:module:pacman' frontend 'yay'
+zstyle ':prezto:module:pacman' frontend 'paru'
 
 #
 # Prompt
@@ -135,7 +137,8 @@ zstyle ':prezto:module:pacman' frontend 'yay'
 # Set the prompt theme to load.
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
-zstyle ':prezto:module:prompt' theme 'sorin'
+# zstyle ':prezto:module:prompt' theme 'sorin'
+# zstyle ':prezto:module:prompt' theme 'spaceship'
 # zstyle ':prezto:module:prompt' theme 'steeef'
 # zstyle ':prezto:module:prompt' theme 'rocco'
 # zstyle ':prezto:module:prompt' theme 'agnoster'
