@@ -44,7 +44,6 @@ zstyle ':prezto:load' pmodule \
   'ruby' \
   'homebrew' \
   'docker' \
-  'thefuck' \
   'explain' \
   'node' \
   'osx' \

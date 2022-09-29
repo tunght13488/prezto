@@ -13,16 +13,18 @@ fi
 
 # Customize to your needs...
 ################################################################################
+[[ -s "${ZDOTDIR:-$HOME}/.zshrc_secret.zsh" ]] && . "${ZDOTDIR:-$HOME}/.zshrc_secret.zsh"
 [[ -s "${ZDOTDIR:-$HOME}/.zprezto/.ztoken" ]] && . "${ZDOTDIR:-$HOME}/.zprezto/.ztoken"
 # VARIABLES
 export LC_ALL=en_US.UTF-8
-export PROJECT_PATH=$HOME/Projects
+export PROJECT_PATH=$HOME/projects
 export PATH=$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$PATH
 export PATH="/usr/lib/ccache/bin/:$PATH"
 # export PATH="/usr/local/opt/php@7.2/sbin:/usr/local/opt/php@7.2/bin:/usr/local/opt/mariadb@10.2/bin:$PATH"
 export PY_USER_BIN=$(python -c 'import site; print(site.USER_BASE + "/bin")')
 export PY3_USER_BIN=$(python3 -c 'import site; print(site.USER_BASE + "/bin")')
 export PATH="$PY3_USER_BIN:$PY_USER_BIN:$PATH"
+export PATH="$HOME/.symfony/bin:$PATH"
 export CGR_BIN_DIR=$HOME/.config/composer/vendor/bin
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
 export EDITOR="vim"
@@ -34,10 +36,10 @@ export ARCHFLAGS="-arch x86_64"
 # Python path
 # export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
 # GoPath
-export GOVENDOR=$PROJECT_PATH/govendor
-export GOCODE=$PROJECT_PATH/gocode
-export GOPATH=$GOVENDOR:$GOCODE
-export PATH=$PATH:$GOVENDOR/bin:$GOCODE/bin
+# export GOVENDOR=$PROJECT_PATH/govendor
+# export GOCODE=$PROJECT_PATH/gocode
+# export GOPATH=$GOVENDOR:$GOCODE
+# export PATH=$PATH:$GOVENDOR/bin:$GOCODE/bin
 # if [[ "$OSTYPE" == darwin* ]]; then
 #     export GOROOT=/usr/local/opt/go/libexec
 #     export PATH=$PATH:$GOROOT/bin
@@ -45,6 +47,7 @@ export PATH=$PATH:$GOVENDOR/bin:$GOCODE/bin
 #     export GOROOT=$HOME/go
 #     export PATH=$PATH:$GOROOT/bin
 # fi
+export PATH="$HOME/go/bin:$PATH"
 # Android
 # export ANDROID_HOME=/usr/local/opt/android-sdk
 export ANDROID_HOME=$HOME/Android/Sdk
@@ -75,6 +78,9 @@ export ALSA_CARD=HDMI
 # Gem
 # export PATH="/home/rocco/.gem/ruby/2.2.0/bin:$PATH"
 export PATH="$HOME/.local/share/gem/ruby/3.0.0/bin:$PATH"
+if which ruby >/dev/null && which gem >/dev/null; then
+  export PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+fi
 # # Heroku
 # export PATH="/usr/local/heroku/bin:$PATH"
 # export HISTCONTROL=ignoreboth
@@ -88,6 +94,7 @@ if (( $+commands[rg] )); then
     export FZF_DEFAULT_COMMAND='rg --files'
   fi
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  alias grep="rg"
 fi
 export FZF_TMUX=1
 export FZF_DEFAULT_OPTS=""
@@ -97,42 +104,47 @@ fi
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export PATH="$HOME/.symfony/bin:$PATH"
+export CHROME_EXECUTABLE="/usr/bin/chromium"
 export SPACESHIP_PROMPT_ORDER=(
-    time          # Time stampts section
-    user          # Username section
-    dir           # Current directory section
-    host          # Hostname section
-    git           # Git section (git_branch + git_status)
-    #hg            # Mercurial section (hg_branch  + hg_status)
-    package       # Package version
-    node          # Node.js section
-    ruby          # Ruby section
-    #elm           # Elm section
-    elixir        # Elixir section
-    #xcode         # Xcode section
-    #swift         # Swift section
-    #golang        # Go section
-    php           # PHP section
-    #rust          # Rust section
-    #haskell       # Haskell Stack section
-    #julia         # Julia section
-    docker        # Docker section
-    #aws           # Amazon Web Services section
-    #venv          # virtualenv section
-    #conda         # conda virtualenv section
-    #pyenv         # Pyenv section
-    #dotnet        # .NET section
-    #ember         # Ember.js section
-    kubecontext   # Kubectl context section
-    terraform     # Terraform workspace section
-    exec_time     # Execution time
-    line_sep      # Line break
-    battery       # Battery level and status
-    vi_mode       # Vi-mode indicator
-    jobs          # Background jobs indicator
-    exit_code     # Exit code section
-    char          # Prompt character
-  )
+  time          # Time stamps section
+  user          # Username section
+  dir           # Current directory section
+  host          # Hostname section
+  git           # Git section (git_branch + git_status)
+  hg            # Mercurial section (hg_branch  + hg_status)
+  package       # Package version
+  gradle        # Gradle section
+  maven         # Maven section
+  node          # Node.js section
+  ruby          # Ruby section
+  elixir        # Elixir section
+  xcode         # Xcode section
+  swift         # Swift section
+  golang        # Go section
+  php           # PHP section
+  rust          # Rust section
+  haskell       # Haskell Stack section
+  julia         # Julia section
+  docker        # Docker section
+  aws           # Amazon Web Services section
+  # gcloud        # Google Cloud Platform section
+  venv          # virtualenv section
+  conda         # conda virtualenv section
+  # pyenv         # Pyenv section
+  dotnet        # .NET section
+  ember         # Ember.js section
+  kubectl       # Kubectl context section
+  terraform     # Terraform workspace section
+  ibmcloud      # IBM Cloud section
+  exec_time     # Execution time
+  line_sep      # Line break
+  battery       # Battery level and status
+  vi_mode       # Vi-mode indicator
+  jobs          # Background jobs indicator
+  exit_code     # Exit code section
+  char          # Prompt character
+)
+export SPACESHIP_GCLOUD_SHOW=false
 eval "$(starship init zsh)"
 # 1password-cli
 # eval $(op signin my)
@@ -181,6 +193,10 @@ alias robo="robo.phar"
 # if (( $+commands[hhvm] )); then
 #   alias composer="hhvm -v ResourceLimit.SocketDefaultTimeout=180 -v Http.SlowQueryThreshold=180000 $(which composer)"
 # fi
+# alias mphp="php7"
+alias mphp="php"
+# alias php="mphp"
+# alias sphp="/usr/bin/php"
 alias c="php $(which composer)"
 alias c70="php70 $(which composer)"
 alias c71="php71 $(which composer)"
@@ -193,13 +209,13 @@ alias c7="php7 $(which composer)"
 alias v="vagrant"
 # Symfony
 alias sf="symfony"
-alias s="php bin/console"
+alias s="mphp bin/console"
 alias srs="s d:d:d --force && s d:d:cr && s d:s:c && s d:f:l --append && s h:f:l --append"
 # Git
 alias gfl="git flow"
 if (( $+commands[hub] )); then
   eval "$(hub alias -s)"
-  # [[ -s $HOME/Projects/govendor/src/github.com/github/hub/etc ]] && fpath=($HOME/Projects/govendor/src/github.com/github/hub/etc $fpath)
+  # [[ -s $HOME/Projects/govendor/src/github.com/`github`/hub/etc ]] && fpath=($HOME/Projects/govendor/src/github.com/github/hub/etc $fpath)
 fi
 # chmod
 alias mx='chmod a+x'
@@ -241,7 +257,6 @@ fi
 # else
 #   alias mphp="php"
 # fi
-alias mphp="php7"
 alias mc="magento-cloud"
 alias magento="mphp bin/magento"
 alias mage="mphp bin/magento"
@@ -297,10 +312,10 @@ alias q="q -O -H"
 alias qp="q -d '|'"
 alias fp="find . -type d -exec chmod u+rwx,g+rwx,o+rx {} \; && find . -type f -exec chmod u+rw,g+rw,o+r {} \;"
 function config_edit_on() {
-  sudo chown -R tungha /etc/nginx /etc/php /etc/php73 /etc/php74 /etc/php7 /etc/varnish /etc/hosts
+  sudo chown -R tungha /etc/nginx /etc/php /etc/php73 /etc/php74 /etc/php7 /etc/varnish /etc/hosts /opt/openresty/nginx/
 }
 function config_edit_off() {
-  sudo chown -R root /etc/nginx /etc/php /etc/php73 /etc/php74 /etc/php7 /etc/varnish /etc/hosts
+  sudo chown -R root /etc/nginx /etc/php /etc/php73 /etc/php74 /etc/php7 /etc/varnish /etc/hosts /opt/openresty/nginx/
 }
 function mr_base () {
   mr config:set web/unsecure/base_url "http://$1/";
@@ -470,6 +485,8 @@ function y {
 }
 alias ports="sudo lsof -iTCP -s TCP:LISTEN -P -n"
 alias k="kubectl"
+alias kgc="k -n demo"
+alias hgc="hm -n demo"
 ################################################################################
 # LIBRARY
 # MeRC
@@ -493,17 +510,18 @@ alias k="kubectl"
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 # [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
+source /usr/share/nvm/init-nvm.sh
 export PATH="$(yarn global bin):$PATH"
 
 # PyEnv
 # export PATH="${HOME}/.local/bin:$PATH"
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-export PYTHON_CONFIGURE_OPTS="--enable-shared"
-if (( $+commands[pyenv] )); then
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
-fi
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
+# export PYTHON_CONFIGURE_OPTS="--enable-shared"
+# if (( $+commands[pyenv] )); then
+#   eval "$(pyenv init -)"
+#   eval "$(pyenv virtualenv-init -)"
+# fi
 
 # # phpbrew
 # export PHPBREW_RC_DISABLE=1
@@ -639,12 +657,21 @@ alias hm="helm"
 alias kc="kubectl"
 alias hmh="hm --namespace headless"
 alias kch="kc -n headless"
+alias kcha="kc -n headless-api"
+alias kci="kc -n inventory"
 alias hmo="hm --namespace oms"
 alias kco="kc -n oms"
 alias hm24="hm --namespace magento24"
 alias kc24="kc -n magento24"
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
+alias kco="kc -n oms"
+alias kcp="kc -n product-feed"
+alias kcw="kc -n wh3pl"
+
+# alias gcloud="docker run --rm -v "${HOME}/.config/gcloud":/root/.config/gcloud -v "${HOME}/.kube":/root/.kube gcr.io/google.com/cloudsdktool/google-cloud-cli:latest gcloud"
+# alias gc="gcloud"
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
+alias bashly='docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly'
 
 function warm_urls() {
   echo ' Connect  | Transfer |  Total   | Status  | URL'
@@ -657,3 +684,10 @@ function warm_urls() {
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
+# export VOLTA_HOME="$HOME/.volta"
+# export PATH="$VOLTA_HOME/bin:$PATH"
+
+# twilio autocomplete setup
+TWILIO_AC_ZSH_SETUP_PATH=/home/tungha/.twilio-cli/autocomplete/zsh_setup && test -f $TWILIO_AC_ZSH_SETUP_PATH && source $TWILIO_AC_ZSH_SETUP_PATH;
+
+SSLKEYLOGFILE=~/.ssl-key.log
