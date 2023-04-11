@@ -23,12 +23,13 @@ export PATH="/usr/lib/ccache/bin/:$PATH"
 # export PATH="/usr/local/opt/php@7.2/sbin:/usr/local/opt/php@7.2/bin:/usr/local/opt/mariadb@10.2/bin:$PATH"
 export PY_USER_BIN=$(python -c 'import site; print(site.USER_BASE + "/bin")')
 export PY3_USER_BIN=$(python3 -c 'import site; print(site.USER_BASE + "/bin")')
-export PATH="$PY3_USER_BIN:$PY_USER_BIN:$PATH"
-export PATH="$HOME/.symfony/bin:$PATH"
+# export PATH="$PY3_USER_BIN:$PY_USER_BIN:$PATH"
+# export PATH="$HOME/.symfony/bin:$PATH"
 export CGR_BIN_DIR=$HOME/.config/composer/vendor/bin
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
-export EDITOR="vim"
-export VISUAL="vim"
+alias vim="nvim"
+export EDITOR="nvim"
+export VISUAL="nvim"
 # ssh
 export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
 # Compilation flags
@@ -103,7 +104,7 @@ if (( $+commands[bat] )); then
 fi
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
-export PATH="$HOME/.symfony/bin:$PATH"
+# export PATH="$HOME/.symfony/bin:$PATH"
 export CHROME_EXECUTABLE="/usr/bin/chromium"
 export SPACESHIP_PROMPT_ORDER=(
   time          # Time stamps section
@@ -449,12 +450,18 @@ function phps () {
     72)
       ln -sf /usr/bin/php72 "$HOME/bin/php" && rehash
     ;;
+    80)
+      ln -sf /usr/bin/php80 "$HOME/bin/php" && rehash
+    ;;
+    81)
+      ln -sf /usr/bin/php-legacy "$HOME/bin/php" && rehash
+    ;;
     off)
       [ -f "$HOME/bin/php" ] && unlink "$HOME/bin/php" && rehash
     ;;
     *)
-      echo "Alias php70/php71 to php"
-      echo "Usage: phps 70|71"
+      echo "Alias php70/php71/etc to php"
+      echo "Usage: phps 70|71|72|80|81|off"
     ;;
   esac
 }
@@ -484,8 +491,8 @@ function y {
   return 0
 }
 alias ports="sudo lsof -iTCP -s TCP:LISTEN -P -n"
-alias k="kubectl"
-alias kgc="k -n demo"
+alias kc="kubectl"
+alias kgc="kc -n demo"
 alias hgc="hm -n demo"
 ################################################################################
 # LIBRARY
@@ -511,17 +518,17 @@ alias hgc="hm -n demo"
 # [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 # [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
 source /usr/share/nvm/init-nvm.sh
-export PATH="$(yarn global bin):$PATH"
+# export PATH="$(yarn global bin):$PATH"
 
 # PyEnv
 # export PATH="${HOME}/.local/bin:$PATH"
-# export PYENV_ROOT="$HOME/.pyenv"
-# export PATH="$PYENV_ROOT/bin:$PATH"
-# export PYTHON_CONFIGURE_OPTS="--enable-shared"
-# if (( $+commands[pyenv] )); then
-#   eval "$(pyenv init -)"
-#   eval "$(pyenv virtualenv-init -)"
-# fi
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+export PYTHON_CONFIGURE_OPTS="--enable-shared"
+if (( $+commands[pyenv] )); then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
 
 # # phpbrew
 # export PHPBREW_RC_DISABLE=1
@@ -628,8 +635,8 @@ ulimit -S -n 20480
 #   PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
 # fi
 # BEGIN SNIPPET: Magento Cloud CLI configuration
-export PATH="$HOME/"'.magento-cloud/bin':"$PATH"
-if [ -f "$HOME/"'.magento-cloud/shell-config.rc' ]; then . "$HOME/"'.magento-cloud/shell-config.rc'; fi
+# export PATH="$HOME/"'.magento-cloud/bin':"$PATH"
+# if [ -f "$HOME/"'.magento-cloud/shell-config.rc' ]; then . "$HOME/"'.magento-cloud/shell-config.rc'; fi
 # END SNIPPET
 alias sm="synthmanager"
 
@@ -691,3 +698,5 @@ function warm_urls() {
 TWILIO_AC_ZSH_SETUP_PATH=/home/tungha/.twilio-cli/autocomplete/zsh_setup && test -f $TWILIO_AC_ZSH_SETUP_PATH && source $TWILIO_AC_ZSH_SETUP_PATH;
 
 SSLKEYLOGFILE=~/.ssl-key.log
+
+xmodmap ~/.xmodmaprc
