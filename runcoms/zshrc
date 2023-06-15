@@ -27,9 +27,9 @@ export PY3_USER_BIN=$(python3 -c 'import site; print(site.USER_BASE + "/bin")')
 # export PATH="$HOME/.symfony/bin:$PATH"
 export CGR_BIN_DIR=$HOME/.config/composer/vendor/bin
 export POWERLINE_CONFIG_COMMAND="$HOME/.local/bin/powerline-config"
-alias vim="nvim"
 export EDITOR="nvim"
 export VISUAL="nvim"
+alias vim="nvim"
 # ssh
 export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
 # Compilation flags
@@ -41,14 +41,14 @@ export ARCHFLAGS="-arch x86_64"
 # export GOCODE=$PROJECT_PATH/gocode
 # export GOPATH=$GOVENDOR:$GOCODE
 # export PATH=$PATH:$GOVENDOR/bin:$GOCODE/bin
-# if [[ "$OSTYPE" == darwin* ]]; then
-#     export GOROOT=/usr/local/opt/go/libexec
-#     export PATH=$PATH:$GOROOT/bin
-# else
-#     export GOROOT=$HOME/go
-#     export PATH=$PATH:$GOROOT/bin
-# fi
-export PATH="$HOME/go/bin:$PATH"
+if (( $+commands[go] )); then
+  export PATH=$PATH:$(go env GOPATH)/bin
+fi
+if (( $+commands[/usr/sbin/aws_completer])); then
+  export PATH=/usr/sbin/:$PATH
+  complete -C '/usr/sbin/aws_completer' aws
+fi
+# export PATH="$HOME/go/bin:$PATH"
 # Android
 # export ANDROID_HOME=/usr/local/opt/android-sdk
 export ANDROID_HOME=$HOME/Android/Sdk
@@ -194,8 +194,8 @@ alias robo="robo.phar"
 # if (( $+commands[hhvm] )); then
 #   alias composer="hhvm -v ResourceLimit.SocketDefaultTimeout=180 -v Http.SlowQueryThreshold=180000 $(which composer)"
 # fi
-# alias mphp="php7"
-alias mphp="php"
+alias mphp="php7"
+# alias mphp="php"
 # alias php="mphp"
 # alias sphp="/usr/bin/php"
 alias c="php $(which composer)"
@@ -366,6 +366,18 @@ function xdebug () {
             sudo systemctl restart php-fpm7
           fi
         fi
+        if (( $+commands[php80] )); then
+          if [[ -f /etc/php80/conf.d/xdebug.ini.deactivated ]] then
+            sudo mv /etc/php80/conf.d/xdebug.ini.deactivated /etc/php80/conf.d/xdebug.ini
+            sudo systemctl restart php80-fpm
+          fi
+        fi
+        if (( $+commands[php-legacy] )); then
+          if [[ -f /etc/php-legacy/conf.d/xdebug.ini.deactivated ]] then
+            sudo mv /etc/php-legacy/conf.d/xdebug.ini.deactivated /etc/php-legacy/conf.d/xdebug.ini
+            sudo systemctl restart php-legacy-fpm
+          fi
+        fi
         if (( $+commands[php] )); then
           if [[ -f /etc/php/conf.d/xdebug.ini.deactivated ]] then
             sudo mv /etc/php/conf.d/xdebug.ini.deactivated /etc/php/conf.d/xdebug.ini
@@ -419,6 +431,18 @@ function xdebug () {
             sudo systemctl restart php-fpm7
           fi
         fi
+        if (( $+commands[php80] )); then
+          if [[ -f /etc/php80/conf.d/xdebug.ini ]] then
+            sudo mv /etc/php80/conf.d/xdebug.ini /etc/php80/conf.d/xdebug.ini.deactivated
+            sudo systemctl restart php80-fpm
+          fi
+        fi
+        if (( $+commands[php-legacy] )); then
+          if [[ -f /etc/php-legacy/conf.d/xdebug.ini ]] then
+            sudo mv /etc/php-legacy/conf.d/xdebug.ini /etc/php-legacy/conf.d/xdebug.ini.deactivated
+            sudo systemctl restart php-legacy-fpm
+          fi
+        fi
         if (( $+commands[php] )); then
           if [[ -f /etc/php/conf.d/xdebug.ini ]] then
             sudo mv /etc/php/conf.d/xdebug.ini /etc/php/conf.d/xdebug.ini.deactivated
@@ -460,7 +484,7 @@ function phps () {
       [ -f "$HOME/bin/php" ] && unlink "$HOME/bin/php" && rehash
     ;;
     *)
-      echo "Alias php70/php71/etc to php"
+      echo "Alias php70/php71/php72/php80/php-legacy to php"
       echo "Usage: phps 70|71|72|80|81|off"
     ;;
   esac
@@ -630,7 +654,8 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
     source /etc/profile.d/vte.sh
 fi
-ulimit -S -n 20480
+# ulimit -S -n 20480
+ulimit -S -n 4096
 # if which ruby >/dev/null && which gem >/dev/null; then
 #   PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
 # fi
