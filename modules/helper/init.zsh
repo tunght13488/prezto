@@ -30,3 +30,28 @@ function is-true {
 #   return 1
 # }
 function coalesce { print "${${(s: :)@}[1]}" }
+
+# Checks if running on macOS Darwin.
+function is-darwin {
+  [[ "$OSTYPE" == darwin* ]]
+}
+
+# Checks if running on Linux.
+function is-linux {
+  [[ "$OSTYPE" == linux* ]]
+}
+
+# Checks if running on BSD.
+function is-bsd {
+  [[ "$OSTYPE" == *bsd* ]]
+}
+
+# Checks if running on Cygwin (Windows).
+function is-cygwin {
+  [[ "$OSTYPE" == cygwin* ]]
+}
+
+# Checks if running on termux (Android).
+function is-termux {
+  [[ "$OSTYPE" == linux-android ]]
+}
