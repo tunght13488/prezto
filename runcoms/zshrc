@@ -48,6 +48,9 @@ if (( $+commands[/usr/sbin/aws_completer])); then
   export PATH=/usr/sbin/:$PATH
   complete -C '/usr/sbin/aws_completer' aws
 fi
+if (( $+commands[ngrok] )); then
+  eval "$(ngrok completion)"
+fi
 # export PATH="$HOME/go/bin:$PATH"
 # Android
 # export ANDROID_HOME=/usr/local/opt/android-sdk
@@ -326,135 +329,68 @@ function mr_base_same () {
   mr config:set web/unsecure/base_url "$1";
   mr config:set web/secure/base_url "$1";
 }
+function xdebug_activate() {
+  if (( $+commands[$1] )); then
+    if [[ -f "$2.deactivated" ]]; then
+      sudo mv "$2.deactivated" "$2"
+      [[ "$OSTYPE" == linux* ]] && sudo systemctl restart "$3"
+      [[ "$OSTYPE" == darwin* ]] && brew services restart "$3"
+    fi
+  fi
+}
+function xdebug_deactivate() {
+  if (( $+commands[$1] )); then
+    if [[ -f "$2" ]]; then
+      sudo mv "$2" "$2.deactivated"
+      [[ "$OSTYPE" == linux* ]] && sudo systemctl restart "$3"
+      [[ "$OSTYPE" == darwin* ]] && brew services restart "$3"
+    fi
+  fi
+}
 function xdebug () {
+  local OSNAME=$(lsb_release -si)
   case $1 in
     on)
       if [[ "$OSTYPE" == linux* ]]; then
-        if (( $+commands[php70] )); then
-          if [[ -f /etc/php70/conf.d/xdebug.ini.deactivated ]] then
-            sudo mv /etc/php70/conf.d/xdebug.ini.deactivated /etc/php70/conf.d/xdebug.ini
-            sudo systemctl restart php70-fpm
-          fi
-        fi
-        if (( $+commands[php71] )); then
-          if [[ -f /etc/php71/conf.d/xdebug.ini.deactivated ]] then
-            sudo mv /etc/php71/conf.d/xdebug.ini.deactivated /etc/php71/conf.d/xdebug.ini
-            sudo systemctl restart php71-fpm
-          fi
-        fi
-        if (( $+commands[php72] )); then
-          if [[ -f /etc/php72/conf.d/xdebug.ini.deactivated ]] then
-            sudo mv /etc/php72/conf.d/xdebug.ini.deactivated /etc/php72/conf.d/xdebug.ini
-            sudo systemctl restart php72-fpm
-          fi
-        fi
-        if (( $+commands[php73] )); then
-          if [[ -f /etc/php73/conf.d/xdebug.ini.deactivated ]] then
-            sudo mv /etc/php73/conf.d/xdebug.ini.deactivated /etc/php73/conf.d/xdebug.ini
-            sudo systemctl restart php73-fpm
-          fi
-        fi
-        if (( $+commands[php74] )); then
-          if [[ -f /etc/php74/conf.d/xdebug.ini.deactivated ]] then
-            sudo mv /etc/php74/conf.d/xdebug.ini.deactivated /etc/php74/conf.d/xdebug.ini
-            sudo systemctl restart php74-fpm
-          fi
-        fi
-        if (( $+commands[php7] )); then
-          if [[ -f /etc/php7/conf.d/xdebug.ini.deactivated ]] then
-            sudo mv /etc/php7/conf.d/xdebug.ini.deactivated /etc/php7/conf.d/xdebug.ini
-            sudo systemctl restart php-fpm7
-          fi
-        fi
-        if (( $+commands[php80] )); then
-          if [[ -f /etc/php80/conf.d/xdebug.ini.deactivated ]] then
-            sudo mv /etc/php80/conf.d/xdebug.ini.deactivated /etc/php80/conf.d/xdebug.ini
-            sudo systemctl restart php80-fpm
-          fi
-        fi
-        if (( $+commands[php-legacy] )); then
-          if [[ -f /etc/php-legacy/conf.d/xdebug.ini.deactivated ]] then
-            sudo mv /etc/php-legacy/conf.d/xdebug.ini.deactivated /etc/php-legacy/conf.d/xdebug.ini
-            sudo systemctl restart php-legacy-fpm
-          fi
-        fi
-        if (( $+commands[php] )); then
-          if [[ -f /etc/php/conf.d/xdebug.ini.deactivated ]] then
-            sudo mv /etc/php/conf.d/xdebug.ini.deactivated /etc/php/conf.d/xdebug.ini
-            sudo systemctl restart php-fpm
-          fi
+        if [[ "$OSNAME" == Ubuntu ]]; then
+          xdebug_activate "php8.0" "/etc/php/8.0/mods-available/xdebug.ini" "php8.0-fpm.service"
+          xdebug_activate "php8.1" "/etc/php/8.1/mods-available/xdebug.ini" "php8.1-fpm.service"
+        else
+          xdebug_activate "php70" "/etc/php70/conf.d/xdebug.ini" "php70-fpm"
+          xdebug_activate "php71" "/etc/php71/conf.d/xdebug.ini" "php71-fpm"
+          xdebug_activate "php72" "/etc/php72/conf.d/xdebug.ini" "php72-fpm"
+          xdebug_activate "php73" "/etc/php73/conf.d/xdebug.ini" "php73-fpm"
+          xdebug_activate "php74" "/etc/php74/conf.d/xdebug.ini" "php74-fpm"
+          xdebug_activate "php7" "/etc/php7/conf.d/xdebug.ini" "php-fpm7"
+          xdebug_activate "php80" "/etc/php80/conf.d/xdebug.ini" "php80-fpm"
+          xdebug_activate "php-legacy" "/etc/php-legacy/conf.d/xdebug.ini" "php-legacy-fpm"
+          xdebug_activate "php" "/etc/php/conf.d/xdebug.ini" "php-fpm"
         fi
       fi
       if [[ "$OSTYPE" == darwin* ]]; then
-        if [[ -f /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini.deactivated ]] then
-          mv /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini.deactivated /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini
-          brew services restart php@7.2
-        fi
+        xdebug_activate "php" "/usr/local/etc/php/7.2/conf.d/ext-xdebug.ini" "php@7.2"
       fi
       export XDEBUG_CONFIG="idekey=PHPSTORM"
     ;;
     off)
       if [[ "$OSTYPE" == linux* ]]; then
-        if (( $+commands[php70] )); then
-          if [[ -f /etc/php70/conf.d/xdebug.ini ]] then
-            sudo mv /etc/php70/conf.d/xdebug.ini /etc/php70/conf.d/xdebug.ini.deactivated
-            sudo systemctl restart php70-fpm
-          fi
-        fi
-        if (( $+commands[php71] )); then
-          if [[ -f /etc/php71/conf.d/xdebug.ini ]] then
-            sudo mv /etc/php71/conf.d/xdebug.ini /etc/php71/conf.d/xdebug.ini.deactivated
-            sudo systemctl restart php71-fpm
-          fi
-        fi
-        if (( $+commands[php72] )); then
-          if [[ -f /etc/php72/conf.d/xdebug.ini ]] then
-            sudo mv /etc/php72/conf.d/xdebug.ini /etc/php72/conf.d/xdebug.ini.deactivated
-            sudo systemctl restart php72-fpm
-          fi
-        fi
-        if (( $+commands[php73] )); then
-          if [[ -f /etc/php73/conf.d/xdebug.ini ]] then
-            sudo mv /etc/php73/conf.d/xdebug.ini /etc/php73/conf.d/xdebug.ini.deactivated
-            sudo systemctl restart php73-fpm
-          fi
-        fi
-        if (( $+commands[php74] )); then
-          if [[ -f /etc/php74/conf.d/xdebug.ini ]] then
-            sudo mv /etc/php74/conf.d/xdebug.ini /etc/php74/conf.d/xdebug.ini.deactivated
-            sudo systemctl restart php74-fpm
-          fi
-        fi
-        if (( $+commands[php7] )); then
-          if [[ -f /etc/php7/conf.d/xdebug.ini ]] then
-            sudo mv /etc/php7/conf.d/xdebug.ini /etc/php7/conf.d/xdebug.ini.deactivated
-            sudo systemctl restart php-fpm7
-          fi
-        fi
-        if (( $+commands[php80] )); then
-          if [[ -f /etc/php80/conf.d/xdebug.ini ]] then
-            sudo mv /etc/php80/conf.d/xdebug.ini /etc/php80/conf.d/xdebug.ini.deactivated
-            sudo systemctl restart php80-fpm
-          fi
-        fi
-        if (( $+commands[php-legacy] )); then
-          if [[ -f /etc/php-legacy/conf.d/xdebug.ini ]] then
-            sudo mv /etc/php-legacy/conf.d/xdebug.ini /etc/php-legacy/conf.d/xdebug.ini.deactivated
-            sudo systemctl restart php-legacy-fpm
-          fi
-        fi
-        if (( $+commands[php] )); then
-          if [[ -f /etc/php/conf.d/xdebug.ini ]] then
-            sudo mv /etc/php/conf.d/xdebug.ini /etc/php/conf.d/xdebug.ini.deactivated
-            sudo systemctl restart php-fpm
-          fi
+        if [[ "$OSNAME" == Ubuntu ]]; then
+          xdebug_deactivate "php8.0" "/etc/php/8.0/mods-available/xdebug.ini" "php8.0-fpm.service"
+          xdebug_deactivate "php8.1" "/etc/php/8.1/mods-available/xdebug.ini" "php8.1-fpm.service"
+        else
+          xdebug_deactivate "php70" "/etc/php70/conf.d/xdebug.ini" "php70-fpm"
+          xdebug_deactivate "php71" "/etc/php71/conf.d/xdebug.ini" "php71-fpm"
+          xdebug_deactivate "php72" "/etc/php72/conf.d/xdebug.ini" "php72-fpm"
+          xdebug_deactivate "php73" "/etc/php73/conf.d/xdebug.ini" "php73-fpm"
+          xdebug_deactivate "php74" "/etc/php74/conf.d/xdebug.ini" "php74-fpm"
+          xdebug_deactivate "php7" "/etc/php7/conf.d/xdebug.ini" "php-fpm7"
+          xdebug_deactivate "php80" "/etc/php80/conf.d/xdebug.ini" "php80-fpm"
+          xdebug_deactivate "php-legacy" "/etc/php-legacy/conf.d/xdebug.ini" "php-legacy-fpm"
+          xdebug_deactivate "php" "/etc/php/conf.d/xdebug.ini" "php-fpm"
         fi
       fi
       if [[ "$OSTYPE" == darwin* ]]; then
-        if [[ -f /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini ]] then
-          mv /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini /usr/local/etc/php/7.2/conf.d/ext-xdebug.ini.deactivated
-          brew services restart php@7.2
-        fi
+        xdebug_deactivate "php" "/usr/local/etc/php/7.2/conf.d/ext-xdebug.ini" "php@7.2"
       fi
       unset XDEBUG_CONFIG
     ;;
@@ -463,25 +399,52 @@ function xdebug () {
     ;;
   esac
 }
+function phps_on() {
+  local OSNAME=$(lsb_release -si)
+  if (( $+commands[$1] )); then
+    if [[ "$OSNAME" == Ubuntu ]]; then
+      sudo update-alternatives --set php "/usr/bin/$1"
+    else
+      ln -sf "/usr/bin/$1" "$HOME/bin/php" && rehash
+    fi
+  fi
+}
+function phps_off() {
+  local OSNAME=$(lsb_release -si)
+  if [[ "$OSNAME" == Ubuntu ]]; then
+    sudo update-alternatives --auto php
+  else
+    [ -f "$HOME/bin/php" ] && unlink "$HOME/bin/php" && rehash
+  fi
+}
 function phps () {
+  local OSNAME=$(lsb_release -si)
   case $1 in
     70)
-      ln -sf /usr/bin/php70 "$HOME/bin/php" && rehash
+      phps_on "php70"
     ;;
     71)
-      ln -sf /usr/bin/php71 "$HOME/bin/php" && rehash
+      phps_on "php71"
     ;;
     72)
-      ln -sf /usr/bin/php72 "$HOME/bin/php" && rehash
+      phps_on "php72"
     ;;
     80)
-      ln -sf /usr/bin/php80 "$HOME/bin/php" && rehash
+      if [[ "$OSNAME" == Ubuntu ]]; then
+        phps_on "php8.0"
+      else
+        phps_on "php80"
+      fi
     ;;
     81)
-      ln -sf /usr/bin/php-legacy "$HOME/bin/php" && rehash
+      if [[ "$OSNAME" == Ubuntu ]]; then
+        phps_on "php8.1"
+      else
+        phps_on "php-legacy"
+      fi
     ;;
     off)
-      [ -f "$HOME/bin/php" ] && unlink "$HOME/bin/php" && rehash
+      phps_off
     ;;
     *)
       echo "Alias php70/php71/php72/php80/php-legacy to php"
@@ -541,7 +504,7 @@ alias hgc="hm -n demo"
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 # [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
-source /usr/share/nvm/init-nvm.sh
+# source /usr/share/nvm/init-nvm.sh
 # export PATH="$(yarn global bin):$PATH"
 
 # PyEnv
@@ -725,3 +688,4 @@ TWILIO_AC_ZSH_SETUP_PATH=/home/tungha/.twilio-cli/autocomplete/zsh_setup && test
 SSLKEYLOGFILE=~/.ssl-key.log
 
 xmodmap ~/.xmodmaprc
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
