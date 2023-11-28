@@ -213,7 +213,7 @@ zstyle ':prezto:module:pacman' frontend 'paru'
 #
 
 # Set the SSH identities to load into the agent.
-zstyle ':prezto:module:ssh:load' identities 'id_rsa'
+zstyle ':prezto:module:ssh:load' identities 'id_rsa' 'id_rsa_tunght13488'
 
 #
 # Syntax Highlighting
