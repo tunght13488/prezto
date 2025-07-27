@@ -18,8 +18,9 @@ fi
 # VARIABLES
 export LC_ALL=en_US.UTF-8
 export PROJECT_PATH=$HOME/projects
-export PATH=$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:/snap/bin:$PATH
 export PATH="/usr/lib/ccache/bin/:$PATH"
+export PATH="$PATH:$HOME/lib/apache-maven-3.6.3/bin"
 # export PATH="/usr/local/opt/php@7.2/sbin:/usr/local/opt/php@7.2/bin:/usr/local/opt/mariadb@10.2/bin:$PATH"
 export PY_USER_BIN=$(python -c 'import site; print(site.USER_BASE + "/bin")')
 export PY3_USER_BIN=$(python3 -c 'import site; print(site.USER_BASE + "/bin")')
@@ -39,11 +40,12 @@ export ARCHFLAGS="-arch x86_64"
 # GoPath
 # export GOVENDOR=$PROJECT_PATH/govendor
 # export GOCODE=$PROJECT_PATH/gocode
-# export GOPATH=$GOVENDOR:$GOCODE
-# export PATH=$PATH:$GOVENDOR/bin:$GOCODE/bin
-if (( $+commands[go] )); then
-  export PATH=$PATH:$(go env GOPATH)/bin
-fi
+export GOROOT="${HOME}/bin/go"
+export GOPATH="${HOME}/go"
+export PATH="${GOPATH}/bin:${GOROOT}/bin:${PATH}"
+# if (( $+commands[go] )); then
+#   export PATH=$PATH:$(go env GOPATH)/bin
+# fi
 if (( $+commands[/usr/sbin/aws_completer])); then
   export PATH=/usr/sbin/:$PATH
   complete -C '/usr/sbin/aws_completer' aws
@@ -89,7 +91,7 @@ fi
 # export PATH="/usr/local/heroku/bin:$PATH"
 # export HISTCONTROL=ignoreboth
 export BROWSER="google-chrome-stable"
-export JAVA_HOME=/usr/lib/jvm/default
+export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 # fzf
 if (( $+commands[rg] )); then
   if (( $+commands[git] )) then
@@ -361,6 +363,7 @@ function xdebug () {
         if [[ "$OSNAME" == Ubuntu ]]; then
           xdebug_activate "php8.0" "/etc/php/8.0/mods-available/xdebug.ini" "php8.0-fpm.service"
           xdebug_activate "php8.1" "/etc/php/8.1/mods-available/xdebug.ini" "php8.1-fpm.service"
+          xdebug_activate "php8.4" "/etc/php/8.4/mods-available/xdebug.ini" "php8.4-fpm.service"
         else
           xdebug_activate "php70" "/etc/php70/conf.d/xdebug.ini" "php70-fpm"
           xdebug_activate "php71" "/etc/php71/conf.d/xdebug.ini" "php71-fpm"
@@ -383,6 +386,7 @@ function xdebug () {
         if [[ "$OSNAME" == Ubuntu ]]; then
           xdebug_deactivate "php8.0" "/etc/php/8.0/mods-available/xdebug.ini" "php8.0-fpm.service"
           xdebug_deactivate "php8.1" "/etc/php/8.1/mods-available/xdebug.ini" "php8.1-fpm.service"
+          xdebug_deactivate "php8.4" "/etc/php/8.4/mods-available/xdebug.ini" "php8.4-fpm.service"
         else
           xdebug_deactivate "php70" "/etc/php70/conf.d/xdebug.ini" "php70-fpm"
           xdebug_deactivate "php71" "/etc/php71/conf.d/xdebug.ini" "php71-fpm"
@@ -449,12 +453,19 @@ function phps () {
         phps_on "php-legacy"
       fi
     ;;
+    84)
+      if [[ "$OSNAME" == Ubuntu ]]; then
+        phps_on "php8.4"
+      else
+        phps_on "php-legacy"
+      fi
+    ;;
     off)
       phps_off
     ;;
     *)
-      echo "Alias php70/php71/php72/php80/php-legacy to php"
-      echo "Usage: phps 70|71|72|80|81|off"
+      echo "Alias php70/php71/php72/php80/php81/php84/php-legacy to php"
+      echo "Usage: phps 70|71|72|80|81|84|off"
     ;;
   esac
 }
@@ -505,8 +516,8 @@ alias hgc="hm -n demo"
 # Wordpress
 [[ -s $HOME/wp-completion.bash ]] && . $HOME/wp-completion.bash
 # # NVM
-# export NVM_DIR="${HOME}/.nvm"
-# [ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+export NVM_DIR="${HOME}/.nvm"
+[ -s "$NVM_DIR/nvm.sh"  ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 # [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
@@ -695,3 +706,5 @@ SSLKEYLOGFILE=~/.ssl-key.log
 
 xmodmap ~/.xmodmaprc
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# [[ -s "/home/tung/.gvm/scripts/gvm" ]] && source "/home/tung/.gvm/scripts/gvm"
