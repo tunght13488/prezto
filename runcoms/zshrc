@@ -91,7 +91,7 @@ fi
 # export PATH="/usr/local/heroku/bin:$PATH"
 # export HISTCONTROL=ignoreboth
 export BROWSER="google-chrome-stable"
-export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
+# export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 # fzf
 if (( $+commands[rg] )); then
   if (( $+commands[git] )) then
@@ -164,6 +164,9 @@ if (( $+commands[exa] )); then
   alias ls="exa --group-directories-first"
   alias l="ls -l"
   alias la="l -a"
+fi
+if (( $+commands[lsd] )); then
+  alias ls="lsd"
 fi
 if [[ "$OSTYPE" == darwin* ]]; then
   if (( $+commands[brew] )); then
@@ -417,6 +420,8 @@ function phps_on() {
     else
       ln -sf "/usr/bin/$1" "$HOME/bin/php" && rehash
     fi
+  else
+    echo "/usr/bin/$1 not found"
   fi
 }
 function phps_off() {
@@ -450,12 +455,19 @@ function phps () {
       if [[ "$OSNAME" == Ubuntu ]]; then
         phps_on "php8.1"
       else
-        phps_on "php-legacy"
+        phps_on "php81"
       fi
     ;;
-    84)
+    82)
       if [[ "$OSNAME" == Ubuntu ]]; then
-        phps_on "php8.4"
+        phps_on "php8.2"
+      else
+        phps_on "php82"
+      fi
+    ;;
+    83)
+      if [[ "$OSNAME" == Ubuntu ]]; then
+        phps_on "php8.3"
       else
         phps_on "php-legacy"
       fi
@@ -521,7 +533,7 @@ export NVM_DIR="${HOME}/.nvm"
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 # [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
-# source /usr/share/nvm/init-nvm.sh
+source /usr/share/nvm/init-nvm.sh
 # export PATH="$(yarn global bin):$PATH"
 
 # PyEnv
@@ -529,10 +541,10 @@ export NVM_DIR="${HOME}/.nvm"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PYTHON_CONFIGURE_OPTS="--enable-shared"
-if (( $+commands[pyenv] )); then
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
-fi
+# if (( $+commands[pyenv] )); then
+#   eval "$(pyenv init -)"
+#   eval "$(pyenv virtualenv-init -)"
+# fi
 
 # # phpbrew
 # export PHPBREW_RC_DISABLE=1
@@ -708,3 +720,9 @@ xmodmap ~/.xmodmaprc
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # [[ -s "/home/tung/.gvm/scripts/gvm" ]] && source "/home/tung/.gvm/scripts/gvm"
+if (( $+commands[zoxide] )); then
+  eval "$(zoxide init zsh)"
+fi
+if (( $+commands[mcfly] )); then
+  eval "$(mcfly init zsh)"
+fi
