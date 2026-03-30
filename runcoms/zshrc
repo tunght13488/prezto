@@ -469,15 +469,15 @@ function phps () {
       if [[ "$OSNAME" == Ubuntu ]]; then
         phps_on "php8.3"
       else
-        phps_on "php-legacy"
+        phps_on "php83"
       fi
     ;;
     off)
       phps_off
     ;;
     *)
-      echo "Alias php70/php71/php72/php80/php81/php84/php-legacy to php"
-      echo "Usage: phps 70|71|72|80|81|84|off"
+      echo "Alias php70/php71/php72/php80/php81/php83/php84/php-legacy to php"
+      echo "Usage: phps 70|71|72|80|81|83|84|off"
     ;;
   esac
 }
@@ -728,4 +728,15 @@ if (( $+commands[mcfly] )); then
   # export MCFLY_KEY_SCHEME=vim
   export MCFLY_FUZZY=2
   export MCFLY_INTERFACE_VIEW=BOTTOM
+fi
+
+# # OPENSPEC:START
+# # OpenSpec shell completions configuration
+# fpath=("/home/tung/.zsh/completions" $fpath)
+# autoload -Uz compinit
+# compinit
+# # OPENSPEC:END
+
+if (( $+commands[broot] )); then
+  source /home/tung/.config/broot/launcher/bash/br
 fi
